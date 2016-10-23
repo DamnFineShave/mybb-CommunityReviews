@@ -25,7 +25,7 @@
   - 3rd party integrations uninstalled
 - **Activate:**
   - Templates & stylesheets inserted
-- **Activate:**
+- **Deactivate:**
   - Templates & stylesheets removed
 
 ### Development mode
