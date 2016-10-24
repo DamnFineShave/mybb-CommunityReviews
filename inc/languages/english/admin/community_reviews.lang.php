@@ -1,101 +1,106 @@
 <?php
 
- // elements
-$l['community_reviews_product_name'] = 'Product name';
-$l['community_reviews_total_rating'] = 'Total rating';
-$l['community_reviews_rating_title'] = 'Rating: {1}/{2}';
-$l['community_reviews_product_url'] = 'Product URL';
-$l['community_reviews_target_product_id'] = 'Target product ID';
-$l['community_reviews_product_price'] = 'Product price';
-$l['community_reviews_product_photo'] = 'Product photo';
-$l['community_reviews_product_photos'] = 'Product photos';
-$l['community_reviews_product_photos_description'] = 'You can select more than one photo in the select box.';
-$l['community_reviews_product_merchants'] = 'Product merchants';
-$l['community_reviews_product_merchants_description'] = 'You can specify merchants registered on this board.';
-
-// locations pointers
-$l['community_reviews_pointer_product'] = 'Product <a href="{1}">#{2}</a>';
-$l['community_reviews_pointer_review'] = 'Review <a href="{1}">#{2}</a>';
-$l['community_reviews_pointer_comment'] = 'Comment <a href="{1}">#{2}</a>';
-
- // snippets
-$l['community_reviews_added_by'] = 'Added by <span>{1}</span>';
-$l['community_reviews_added_on'] = 'on <span>{1}</span>';
-$l['community_reviews_added_in'] = 'in <span>{1}</span>';
-$l['community_reviews_rating_from'] = 'from';
-$l['community_reviews_no_ratings'] = 'No ratings yet';
-
- // Who's Online
- $l['community_reviews_location'] = 'Product reviews';
- $l['community_reviews_activity'] = 'Browsing <a href="%s">Reviews</a>';
+// plugin management
+$l['community_reviews_pluginlibrary_missing'] = 'Add <a href="https://mods.mybb.com/view/pluginlibrary">PluginLibrary</a> in order to use the plugin.';
 
 // reviews section
-$l['community_reviews_num_products'] = '{1} products';
-$l['community_reviews_num_reviews'] = '{1} reviews';
-$l['community_reviews_num_views'] = '{1} views';
+$l['community_reviews_admin'] = 'Reviews Management';
 
-// sorting & content settings
-$l['community_reviews_sorting_name'] = 'Name';
-$l['community_reviews_sorting_rating'] = 'Rating';
-$l['community_reviews_sorting_reviews'] = 'Reviews';
-$l['community_reviews_sorting_views'] = 'Views';
-$l['community_reviews_reviews_only'] = 'Show reviews only';
+// tabs
+$l['community_reviews_admin_tab_categories'] = 'Categories';
+$l['community_reviews_admin_tab_categories_description'] = 'Here you can manage review categories.';
 
-// sections
-$l['community_reviews_categories'] = 'Review categories';
-$l['community_reviews_sorting_options'] = 'Sorting options';
-$l['community_reviews_recent_products'] = 'Recent products';
-$l['community_reviews_recent_reviews'] = 'Recent comments';
-$l['community_reviews_category'] = 'Product reviews in <span>{1}</span>';
-$l['community_reviews_product_summary'] = 'Product summary';
-$l['community_reviews_product_reviews'] = 'Product reviews';
-$l['community_reviews_merge_product'] = 'Merge Product';
-$l['community_reviews_merchant_reviews'] = '{1} - merchant reviews';
-$l['community_reviews_merchant_widget'] = 'Merchant\'s reviews';
-$l['community_reviews_add_product_in'] = 'Add new product in <span>{1}</span>';
-$l['community_reviews_update_product_in'] = 'Edit product in <span>{1}</span>';
-$l['community_reviews_add_review_in'] = 'Add new review of <span>{1}</span>';
-$l['community_reviews_edit_review_in'] = 'Edit review of <span>{1}</span>';
-$l['community_reviews_add_comment_in'] = 'Add new comment on <span>{1}</span>';
-$l['community_reviews_edit_comment_in'] = 'Edit comment on <span>{1}</span>';
+$l['community_reviews_admin_tab_fields'] = 'Fields';
+$l['community_reviews_admin_tab_fields_description'] = 'Here you can manage review fields.';
 
-// messages
-$l['community_reviews_add_review_error'] = 'Some fields were left blank.';
-$l['community_reviews_photo_required'] = 'At least one product photo is required.';
-$l['community_reviews_url_invalid'] = 'The entered URL is invalid.';
-$l['community_reviews_product_not_found'] = 'Specified product does not exist.';
-$l['community_reviews_review_added'] = 'Your review has been added.';
-$l['community_reviews_review_updated'] = 'Selected review has been updated.';
-$l['community_reviews_review_deleted'] = 'Selected review has been deleted.';
-$l['community_reviews_product_already_exists'] = 'The specified product already exists.';
-$l['community_reviews_product_name_too_long'] = 'The product name should not exceeed {1} characters.';
-$l['community_reviews_product_added'] = 'New product has been added.';
-$l['community_reviews_product_updated'] = 'Selected product has been updated.';
-$l['community_reviews_product_deleted'] = 'Selected product has been deleted.';
-$l['community_reviews_product_merged'] = 'Selected product has been merged.';
-$l['community_reviews_comment_added'] = 'Your comment has been added.';
-$l['community_reviews_comment_updated'] = 'Selected comment has been updated.';
-$l['community_reviews_comment_deleted'] = 'Selected comment has been deleted.';
+$l['community_reviews_admin_tab_merge_products'] = 'Merge Products';
+$l['community_reviews_admin_tab_merge_products_description'] = 'Here you can merge two products. Reviews and comments attached to the first product will be appended to the other one, the view count will be combined and the source product will be deleted.';
 
-// actions
-$l['community_reviews_add_product'] = 'Add Product';
-$l['community_reviews_update_product'] = 'Update Product';
-$l['community_reviews_add_review'] = 'Add Review';
-$l['community_reviews_update_review'] = 'Update Review';
-$l['community_reviews_add_comment'] = 'Add Comment';
-$l['community_reviews_update_comment'] = 'Update Review';
-$l['community_reviews_report'] = 'Report';
-$l['community_reviews_edit'] = 'Edit';
-$l['community_reviews_delete'] = 'Delete';
-$l['community_reviews_merge'] = 'Merge';
-$l['community_reviews_confirm_action'] = 'Confirm action';
-$l['community_reviews_back'] = 'Back';
-$l['community_reviews_proceed'] = 'Proceed';
-$l['community_reviews_view_more'] = 'View more &rarr;';
-$l['community_reviews_confirm_delete_product'] = 'Are you sure you want to delete selected product?';
-$l['community_reviews_confirm_delete_review'] = 'Are you sure you want to delete selected review?';
-$l['community_reviews_confirm_delete_comment'] = 'Are you sure you want to delete selected comment?';
+// common
+$l['community_reviews_admin_id'] = 'ID';
+$l['community_reviews_admin_name'] = 'Name';
+$l['community_reviews_admin_category'] = 'Category';
+$l['community_reviews_admin_categories'] = 'Categories';
+$l['community_reviews_admin_order'] = 'Order';
+$l['community_reviews_admin_controls'] = 'Controls';
+$l['community_reviews_admin_edit'] = 'Edit';
+$l['community_reviews_admin_delete'] = 'Delete';
+$l['community_reviews_admin_submit'] = 'Submit';
+$l['community_reviews_admin_update_order'] = 'Update order';
+$l['community_reviews_admin_field_copy'] = 'Add to category...';
 
-// 3rd party integration
-$l['myalerts_community_reviews_merchant_tag_alert'] = '{1} has tagged you in a review of {2}';
-$l['myalerts_setting_community_reviews_merchant_tag'] = 'Receive alert when tagged in a review?';
+// categories page
+$l['community_reviews_admin_category_list'] = 'Category list (%s)';
+$l['community_reviews_admin_category_edit'] = 'Edit category';
+$l['community_reviews_admin_category_add'] = 'Add new category';
+$l['community_reviews_admin_category_deleted'] = 'Successfully deleted review category.';
+$l['community_reviews_admin_category_updated'] = 'Successfully updated review category.';
+$l['community_reviews_admin_category_added'] = 'Successfully added new review category.';
+$l['community_reviews_admin_category_delete_confirm'] = 'Do you really want to delete selected review category?';
+
+// fields page
+$l['community_reviews_admin_field_list'] = 'Field list (%s)';
+$l['community_reviews_admin_field_edit'] = 'Edit field';
+$l['community_reviews_admin_field_add'] = 'Add new field';
+$l['community_reviews_admin_field_deleted'] = 'Successfully deleted review field.';
+$l['community_reviews_admin_field_updated'] = 'Successfully updated review field.';
+$l['community_reviews_admin_field_added'] = 'Successfully added new review field.';
+$l['community_reviews_admin_field_order_updated'] = 'Successfully updated review fields order.';
+$l['community_reviews_admin_field_delete_confirm'] = 'Do you really want to delete selected review field?';
+
+// merge page
+$l['community_reviews_admin_merge_products'] = 'Merge products';
+$l['community_reviews_admin_source_product'] = 'Source product ID';
+$l['community_reviews_admin_target_product'] = 'Target product ID';
+$l['community_reviews_admin_products_merged'] = 'Successfully merged products.';
+
+// plugins page
+$l['community_reviews_myalerts_install'] = 'Install MyAlerts integration';
+$l['community_reviews_myalerts_uninstall'] = 'Uninstall MyAlerts integration';
+$l['community_reviews_myalerts_installed'] = 'Community Reviews: MyAlerts integration has been installed.';
+$l['community_reviews_myalerts_uninstalled'] = 'Community Reviews: MyAlerts integration has been uninstalled.';
+
+// settings
+$l['setting_group_community_reviews'] = 'Community Reviews';
+$l['setting_group_community_reviews_desc'] = 'Settings for Community Reviews.';
+
+$l['setting_display_order'] = 'Display order';
+$l['setting_display_order_desc'] = 'Determines how product entries should be displayed.';
+$l['setting_display_order_asc'] = 'Oldest to newest';
+$l['setting_display_order_desc'] = 'Newest to oldest';
+
+$l['setting_per_page'] = 'Items per page';
+$l['setting_per_page_desc'] = 'Items to be shown on single page.';
+
+$l['setting_widget_items_limit'] = 'Widget list length';
+$l['setting_widget_items_limit_desc'] = 'Number of items to be displayed in the Reviews widget.';
+
+$l['setting_recent_items_limit'] = 'Recent items list length';
+$l['setting_recent_items_limit_desc'] = 'Number of recently active items to be displayed on the Reviews index page.';
+
+$l['setting_product_name_length_limit'] = 'Product name length limit';
+$l['setting_product_name_length_limit_desc'] = 'Limits the length of Product titles.';
+
+$l['setting_product_name_length_card'] = 'Name length limit on product cards';
+$l['setting_product_name_length_card_desc'] = 'Limits the length of titles displayed on Product cards.';
+
+$l['setting_groups_mod'] = 'Group permissions: Moderation';
+$l['setting_groups_mod_desc'] = 'User groups that can moderate reviews (edit and delete).';
+
+$l['setting_supermods'] = 'Super moderators are Reviews moderators';
+$l['setting_supermods_desc'] = 'Automatically allow forum super moderators to moderate reviews as well.';
+
+$l['setting_merchant_group'] = 'Merchants group';
+$l['setting_merchant_group_desc'] = 'The user group which product merchants can be selected from.';
+
+$l['setting_require_review_photos'] = 'Require review photos';
+$l['setting_require_review_photos_desc'] = 'At least one photo will be required upon adding a review.';
+
+$l['setting_max_review_photos'] = 'Maximum photos per review';
+$l['setting_max_review_photos_desc'] = 'The maximum number of photos that can be attached to a review.';
+
+$l['setting_photos_auth_client_id'] = 'Photo hosting OAuth Client ID';
+$l['setting_photos_auth_client_id_desc'] = '';
+
+$l['setting_comment_field_name'] = 'Review comment field title';
+$l['setting_comment_field_name_desc'] = '';

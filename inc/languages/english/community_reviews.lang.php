@@ -1,6 +1,6 @@
 <?php
 
- // elements
+// elements
 $l['community_reviews_product_name'] = 'Product name';
 $l['community_reviews_total_rating'] = 'Total rating';
 $l['community_reviews_rating_title'] = 'Rating: {1}/{2}';
@@ -25,9 +25,9 @@ $l['community_reviews_added_in'] = 'in <span>{1}</span>';
 $l['community_reviews_rating_from'] = 'from';
 $l['community_reviews_no_ratings'] = 'No ratings yet';
 
- // Who's Online
- $l['community_reviews_location'] = 'Product reviews';
- $l['community_reviews_activity'] = 'Browsing <a href="%s">Reviews</a>';
+// Who's Online
+$l['community_reviews_location'] = 'Product reviews';
+$l['community_reviews_activity'] = 'Browsing <a href="%s">Reviews</a>';
 
 // reviews section
 $l['community_reviews_num_products'] = '{1} products';
