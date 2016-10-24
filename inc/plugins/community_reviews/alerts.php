@@ -125,7 +125,7 @@ function CommunityReviewsMyalertsIntegrable()
 
     $pluginsCache = $cache->read('plugins');
 
-    if (in_array('myalerts', $pluginsCache['active'])) {
+    if ($pluginsCache && in_array('myalerts', $pluginsCache['active'])) {
         if ($euantor_plugins = $cache->read('euantor_plugins')) {
             if (isset($euantor_plugins['myalerts']['version'])) {
                 $version = explode('.', $euantor_plugins['myalerts']['version']);
