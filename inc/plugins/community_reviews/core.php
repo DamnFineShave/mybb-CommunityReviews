@@ -231,8 +231,11 @@ trait CommunityReviewsCore
         if (mb_strpos($url, 'https:') === 0 || mb_strpos($url, 'http:') === 0) {
             // DVZ Secure Content integration
             if (class_exists('dvz_sc')) {
-                if (dvz_sc::settings('proxy_images') == 'all' || dvz_sc::is_secure_url($url)) {
-                    $url = dvz_sc::proxy_url($url);
+                if (
+                    dvz_sc::settings('proxy_images') == 'all' ||
+                    (dvz_sc::settings('proxy_images') == 'insecure' && !dvz_sc::is_secure_url($url))
+                ) {
+                    $url = dvz_sc::proxy_url($url); 
                 }
             }
         } else {
