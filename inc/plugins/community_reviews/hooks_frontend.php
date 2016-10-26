@@ -66,6 +66,7 @@ trait CommunityReviewsHooksFrontend
                     'merge_product',
                     'page',
                     'product_card_label',
+                    'product_card_photo',
                     'product_card',
                     'product',
                     'rating_star',

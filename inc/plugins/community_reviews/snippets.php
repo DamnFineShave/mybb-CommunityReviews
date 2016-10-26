@@ -125,7 +125,27 @@ trait CommunityReviewsSnippets
             $url = self::url('product', $product['product_id'], self::toSlug($product['name']));
         }
 
+        if (!empty($product['photos'])) {
+            $photos = self::buildCardThumbnails($product, $product['photos']);
+        } elseif (!empty($product['thumbnail_url'])) {
+            $photos = self::buildCardThumbnails($product, [$product['thumbnail_url']]);
+        } else {
+            $photos = '';
+        }
+
         eval('$html = "' . self::tpl('product_card') . '";');
+
+        return $html;
+    }
+
+    public static function buildCardThumbnails($product, $urls)
+    {
+        $html = '';
+
+        foreach ($urls as $url) {
+            $thumbnailUrl = htmlspecialchars_uni(self::getResourceUrl($url));
+            eval('$html .= "' . self::tpl('product_card_photo') . '";');
+        }
 
         return $html;
     }

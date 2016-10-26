@@ -8,5 +8,8 @@
         {$labels}
         {$starRating}
         <p class="community-reviews__card-group__card-container__card__description">{$description}</p>
+        <div class="community-reviews__card-group__card-container__card__photos">
+            {$photos}
+        </div>
     </div>
 </div>

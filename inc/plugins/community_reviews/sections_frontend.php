@@ -46,13 +46,13 @@ trait CommunityReviewsSectionsFrontend
         $recentProducts = '';
         $recentReviews = '';
 
-        $query = self::getProductsDataWithReviewCount('ORDER BY date DESC LIMIT ' . (int)self::settings('recent_items_limit'));
+        $products = self::getProductsDataWithReviewCountAndPhotos('ORDER BY date DESC LIMIT ' . (int)self::settings('recent_items_limit'));
 
-        while ($row = $db->fetch_array($query)) {
-            $recentProducts .= self::buildProductCard($row);
+        foreach ($products as $product) {
+            $recentProducts .= self::buildProductCard($product);
         }
 
-        $query = self::getReviewsDataWithReviewCount('ORDER BY r.date DESC LIMIT ' . (int)self::settings('recent_items_limit'));
+        $query = self::getReviewsDataWithReviewCountAndPhotos('ORDER BY r.date DESC LIMIT ' . (int)self::settings('recent_items_limit'));
 
         while ($row = $db->fetch_array($query)) {
             $recentReviews .= self::buildProductCard($row, true);

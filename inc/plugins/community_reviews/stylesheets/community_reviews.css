@@ -81,6 +81,11 @@
 .community-reviews__card-group__card-container__card__label { display: inline-block; position: relative; top: -2px; margin-left: 4px; padding: 8px; color: #666; border: solid 1px rgba(0,0,0,0.1); border-radius: 3px; font-weight: bold; line-height: 10px; }
 .community-reviews__card-group__card-container__card__description { margin-top: 6px; color: #666; }
 
+.community-reviews__card-group__card-container__card__photos:not(:empty) { padding: 6px; }
+.community-reviews__card-group__card-container__card__photo { display: inline-block; margin: 0 2px; padding: 6px;  position: relative; height: 90px; width: 120px; overflow: hidden; border: solid 1px rgba(0,0,0,0.1); border-radius: 3px; }
+.community-reviews__card-group__card-container__card__photo__image-container { position: relative; height: 90px; width: 120px; overflow: hidden; }
+.community-reviews__card-group__card-container__card__photo__image { width: 100%; height: 100%; background-size: cover; background-position: center center; }
+
 .community-reviews__stars { font-size: 0; cursor: default; }
 .community-reviews__stars__star { display: inline-block; margin: 0 1px; }
 .community-reviews__stars__star:before { font-family: FontAwesome; font-size: 16px; }

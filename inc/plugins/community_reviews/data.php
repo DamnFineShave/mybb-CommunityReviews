@@ -253,6 +253,39 @@ trait CommunityReviewsData
         ");
     }
 
+    public static function getProductsDataWithReviewCountAndPhotos($statements = '')
+    {
+        global $db;
+
+        $query = $db->query("
+            SELECT
+                p.*, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(r.id) AS num_reviews
+            FROM
+                " . TABLE_PREFIX . "community_reviews_products p
+                INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
+                INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=p.user_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews r ON r.product_id=p.id
+            GROUP BY p.id
+            $statements
+        ");
+
+        $products = [];
+
+        while ($row = $db->fetch_array($query)) {
+            $products[ $row['id'] ] = $row;
+        }
+
+        $productIds = array_column($products, 'id');
+
+        $productsPhotos = self::getProductsPhotos($productIds);
+
+        foreach ($productsPhotos as $photo) {
+            $products[ $photo['product_id'] ]['photos'][] = $photo['thumbnail_url'];
+        }
+
+        return $products;
+    }
+
     public static function getProductsWithReviewCountInCategory($categoryId, $statements = '')
     {
         global $db;
@@ -390,6 +423,41 @@ trait CommunityReviewsData
     {
         global $db;
         return $db->simple_select('community_reviews_photos', '*', $where, $options);
+    }
+
+    public static function getProductsPhotos($productIds, $allPhotos = false)
+    {
+        global $db;
+
+        $photos = [];
+
+        if ($productIds) {
+            array_walk($productIds, 'intval');
+
+            if (!$allPhotos) {
+                $columns = 'r.product_id, MIN(ph.thumbnail_url) AS thumbnail_url';
+                $groupBy = 'GROUP BY r.product_id';
+            } else {
+                $columns = 'r.product_id, ph.thumbnail_url';
+                $groupBy = '';
+            }
+
+            $query = $db->query("
+                SELECT
+                    $columns
+                FROM
+                    " . TABLE_PREFIX . "community_reviews r
+                    INNER JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON r.id=ph.review_id
+                WHERE r.product_id IN (" . implode(',', $productIds) . ")
+                $groupBy
+            ");
+
+            while ($row = $db->fetch_array($query)) {
+                $photos[] = $row;
+            }
+        }
+
+        return $photos;
     }
 
     public static function getReviewPhotos($reviewId)
@@ -633,6 +701,24 @@ trait CommunityReviewsData
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=r.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
             GROUP BY r.id
+            $statements
+        ");
+    }
+
+    public static function getReviewsDataWithReviewCountAndPhotos($statements)
+    {
+        global $db;
+        return $db->query("
+            SELECT
+                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
+            FROM
+                " . TABLE_PREFIX . "community_reviews r
+                INNER JOIN " . TABLE_PREFIX . "community_reviews_products p ON p.id=r.product_id
+                INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
+                INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=r.user_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews pr ON pr.product_id=r.product_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
+            GROUP BY r.id, pr.product_id
             $statements
         ");
     }
