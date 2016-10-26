@@ -191,6 +191,9 @@ trait CommunityReviewsLogicFrontend
 
                 $list = explode(',', $mybb->get_input('merchants'));
 
+                // reduce the list to 1 element
+                $list = [array_shift($list)];
+
                 $users = self::getUsersByUsername($list, 'uid,username,usergroup,additionalgroups');
 
                 if ($db->num_rows($users)) {

@@ -10,8 +10,8 @@ $l['community_reviews_product_price'] = 'Product price';
 $l['community_reviews_product_photo'] = 'Product photo';
 $l['community_reviews_product_photos'] = 'Product photos';
 $l['community_reviews_product_photos_description'] = 'You can select more than one photo in the select box.';
-$l['community_reviews_product_merchants'] = 'Product merchants';
-$l['community_reviews_product_merchants_description'] = 'You can specify merchants registered on this board.';
+$l['community_reviews_product_merchants'] = 'Product merchant';
+$l['community_reviews_product_merchants_description'] = 'You can specify a merchant registered on this board.';
 
 // locations pointers
 $l['community_reviews_pointer_product'] = 'Product <a href="{1}">#{2}</a>';
