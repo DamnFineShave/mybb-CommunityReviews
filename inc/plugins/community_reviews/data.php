@@ -723,18 +723,38 @@ trait CommunityReviewsData
         ");
     }
 
-    public static function getReviewsDataByMerchant($userId, $statements = '')
+    public static function getReviewsDataWithReviewCountAndPhotosByUser($userId, $statements)
     {
         global $db;
         return $db->query("
             SELECT
-                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar
+                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
+            FROM
+                " . TABLE_PREFIX . "community_reviews r
+                INNER JOIN " . TABLE_PREFIX . "community_reviews_products p ON p.id=r.product_id
+                INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
+                INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=r.user_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews pr ON pr.product_id=r.product_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
+            WHERE r.user_id=" . (int)$userId . "
+            GROUP BY r.id, pr.product_id
+            $statements
+        ");
+    }
+
+    public static function getReviewsDataWithReviewCountAndPhotosByMerchant($userId, $statements = '')
+    {
+        global $db;
+        return $db->query("
+            SELECT
+                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
             FROM
                 " .  TABLE_PREFIX . "community_reviews_merchants rm
                 INNER JOIN " . TABLE_PREFIX . "community_reviews r ON r.id=rm.review_id
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_products p ON p.id=r.product_id
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=r.user_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews pr ON pr.product_id=r.product_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
             WHERE rm.user_id=" . (int)$userId . "
             GROUP BY r.id, ph.thumbnail_url

@@ -52,6 +52,7 @@ $l['community_reviews_product_reviews'] = 'Product reviews';
 $l['community_reviews_merge_product'] = 'Merge Product';
 $l['community_reviews_merchant_reviews'] = '{1} - merchant reviews';
 $l['community_reviews_merchant_widget'] = 'Merchant\'s reviews';
+$l['community_reviews_user_widget'] = 'User reviews';
 $l['community_reviews_add_product_in'] = 'Add new product in <span>{1}</span>';
 $l['community_reviews_update_product_in'] = 'Edit product in <span>{1}</span>';
 $l['community_reviews_add_review_in'] = 'Add new review of <span>{1}</span>';

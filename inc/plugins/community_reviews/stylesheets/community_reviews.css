@@ -76,7 +76,7 @@
 .community-reviews__card-group__card-container__note { padding: 8px; font-size: 11px; color: #888; }
 .community-reviews__card-group__card-container__note p { display: inline; }
 .community-reviews__card-group__card-container__note img { position: relative; top: 7px; height: 20px; width: 20px; border: solid 2px #FFF; border-radius: 100px; }
-.community-reviews__card-group__card-container__card { flex-grow: 1; padding: 10px; min-width: 220px; border: solid 1px rgba(0,0,0,0.1); border-radius: 2px; box-shadow: 0 2px 2px rgba(0,0,0,0.05); }
+.community-reviews__card-group__card-container__card { flex-grow: 1; padding: 10px; min-width: 220px; background: #FFF; border: solid 1px rgba(0,0,0,0.1); border-radius: 2px; box-shadow: 0 2px 2px rgba(0,0,0,0.05); }
 .community-reviews__card-group__card-container__card__title { display: inline-block; font-size: 22px; font-weight: bold; }
 .community-reviews__card-group__card-container__card__label { display: inline-block; position: relative; top: -2px; margin-left: 4px; padding: 8px; color: #666; border: solid 1px rgba(0,0,0,0.1); border-radius: 3px; font-weight: bold; line-height: 10px; }
 .community-reviews__card-group__card-container__card__description { margin-top: 6px; color: #666; }

@@ -75,6 +75,19 @@ trait CommunityReviewsSnippets
         return $html;
     }
 
+    public static function buildReviewListing($products)
+    {
+        global $mybb, $lang;
+
+        $html = '';
+
+        foreach ($products as $productId => $product) {
+            $html .= self::buildProductCard($product, true);
+        }
+
+        return $html;
+    }
+
     public static function buildProductCard($product, $isReview = false)
     {
         global $mybb, $lang;
@@ -122,7 +135,7 @@ trait CommunityReviewsSnippets
         if (!$isReview) {
             $url = self::url('product', $product['id'], self::toSlug($product['name']));
         } else {
-            $url = self::url('product', $product['product_id'], self::toSlug($product['name']));
+            $url = self::url('review', $product['product_id'], self::toSlug($product['name']), $product['id']);
         }
 
         if (!empty($product['photos'])) {

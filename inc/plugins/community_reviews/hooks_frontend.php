@@ -80,6 +80,13 @@ trait CommunityReviewsHooksFrontend
                     'sorting_options',
                 ], 'community_reviews_');
             }
+        } elseif (defined('THIS_SCRIPT') && THIS_SCRIPT == 'member.php') {
+            if ($mybb->get_input('action') == '') {
+                self::loadTemplates([
+                    'merchant_widget',
+                    'user_widget',
+                ], 'community_reviews_');
+            }
         }
 
         // register MyAlerts formatters
@@ -211,19 +218,39 @@ trait CommunityReviewsHooksFrontend
 
     public static function member_profile_end()
     {
-        global $mybb, $db, $lang, $memprofile, $community_reviews_merchant_widget, $theme;
+        global $mybb, $db, $lang, $memprofile, $community_reviews_user_widget, $community_reviews_merchant_widget, $theme;
 
         $lang->load('community_reviews');
 
-        $url = self::url('merchant_reviews', $memprofile['uid']);
-
+        // user widget
         $limit = (int)self::settings('widget_items_limit');
 
-        $query = self::getReviewsDataByMerchant($memprofile['uid'], 'ORDER BY r.date DESC LIMIT ' . $limit);
+        $data = self::getReviewsDataWithReviewCountAndPhotosByUser($memprofile['uid'], 'ORDER BY r.date DESC LIMIT ' . $limit);
 
-        $entries = self::buildWidgetEntries($query, (int)self::settings('widget_items_limit'));
+        if ($data) {
+            $entries = self::buildReviewListing($data);
+            eval('$community_reviews_user_widget = "' . self::tpl('user_widget') . '";');
+        } else {
+            $community_reviews_user_widget = '';
+        }
 
-        eval('$community_reviews_merchant_widget = "' . self::tpl('merchant_widget') . '";');
+        // merchant widget
+        if (is_member(self::settings('merchant_group', $memprofile))) {
+            $url = self::url('merchant_reviews', $memprofile['uid']);
+
+            $limit = (int)self::settings('widget_items_limit');
+
+            $data = self::getReviewsDataWithReviewCountAndPhotosByMerchant($memprofile['uid'], 'ORDER BY r.date DESC LIMIT ' . $limit);
+
+            if ($data) {
+                $entries = self::buildProductListing($data);
+                eval('$community_reviews_merchant_widget = "' . self::tpl('merchant_widget') . '";');
+            } else {
+                $community_reviews_merchant_widget = '';
+            }
+        } else {
+            $community_reviews_merchant_widget = '';
+        }
     }
 
     public static function report_type()

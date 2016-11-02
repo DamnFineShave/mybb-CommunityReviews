@@ -545,7 +545,7 @@ trait CommunityReviewsSectionsFrontend
                 // pagination
                 $multipage = $listManager->pagination();
 
-                $query = self::getReviewsDataByMerchant($user['uid'], $listManager->sql());
+                $query = self::getReviewsDataWithReviewCountAndPhotosByMerchant($user['uid'], $listManager->sql());
 
                 $reviews = '';
 
