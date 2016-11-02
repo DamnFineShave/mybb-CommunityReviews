@@ -5,7 +5,8 @@ $plugins->add_hook('admin_config_action_handler', ['CommunityReviews', 'admin_co
 $plugins->add_hook('admin_config_menu', ['CommunityReviews', 'admin_config_menu']);
 $plugins->add_hook('admin_config_plugins_begin', ['CommunityReviews', 'admin_config_plugins_begin']);
 $plugins->add_hook('admin_config_settings_change', ['CommunityReviews', 'admin_config_settings_change']);
-$plugins->add_hook('admin_user_users_merge_commit', ['CommunityReviews', 'user_merge']);
+$plugins->add_hook('admin_user_users_merge_commit', ['CommunityReviews', 'admin_user_users_merge_commit']);
+$plugins->add_hook('admin_user_users_delete_commit_end', ['CommunityReviews', 'admin_user_users_delete_commit_end']);
 
 trait CommunityReviewsHooksACP
 {
@@ -401,16 +402,47 @@ trait CommunityReviewsHooksACP
 
     }
 
-    public static function user_merge()
+    public static function admin_user_users_merge_commit()
     {
         global $db, $source_user, $destination_user;
-        return $db->update_query(
+
+        $db->update_query(
+            'community_reviews_products',
+            [
+                'user_id' => (int)$destination_user['uid'],
+            ],
+            'user_id=' . (int)$source_user['uid']
+        );
+        $db->update_query(
             'community_reviews',
             [
                 'user_id' => (int)$destination_user['uid'],
-                'user_id=' . (int)$source_user['uid'],
-            ]
+            ],
+            'user_id=' . (int)$source_user['uid']
         );
+        $db->update_query(
+            'community_reviews_merchants',
+            [
+                'user_id' => (int)$destination_user['uid'],
+            ],
+            'user_id=' . (int)$source_user['uid']
+        );
+        $db->update_query(
+            'community_reviews_comments',
+            [
+                'user_id' => (int)$destination_user['uid'],
+            ],
+            'user_id=' . (int)$source_user['uid']
+        );
+    }
+
+    public static function admin_user_users_delete_commit_end()
+    {
+        global $db, $user;
+
+        $db->delete_query('community_reviews', "user_id =" . (int)$destination_user['uid']);
+        $db->delete_query('community_reviews_merchants', "user_id =" . (int)$destination_user['uid']);
+        $db->delete_query('community_reviews_comments', "user_id =" . (int)$destination_user['uid']);
     }
 
     public static function admin_config_settings_change()
