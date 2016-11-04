@@ -243,7 +243,7 @@ trait CommunityReviewsHooksFrontend
             $data = self::getReviewsDataWithReviewCountAndPhotosByMerchant($memprofile['uid'], 'ORDER BY r.date DESC LIMIT ' . $limit);
 
             if ($db->num_rows($data)) {
-                $entries = self::buildProductListing($data);
+                $entries = self::buildReviewListing($data);
                 eval('$community_reviews_merchant_widget = "' . self::tpl('merchant_widget') . '";');
             } else {
                 $community_reviews_merchant_widget = '';
