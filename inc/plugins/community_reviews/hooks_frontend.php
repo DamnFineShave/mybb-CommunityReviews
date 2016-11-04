@@ -227,7 +227,7 @@ trait CommunityReviewsHooksFrontend
 
         $data = self::getReviewsDataWithReviewCountAndPhotosByUser($memprofile['uid'], 'ORDER BY r.date DESC LIMIT ' . $limit);
 
-        if ($data) {
+        if ($db->num_rows($data)) {
             $entries = self::buildReviewListing($data);
             eval('$community_reviews_user_widget = "' . self::tpl('user_widget') . '";');
         } else {
@@ -242,7 +242,7 @@ trait CommunityReviewsHooksFrontend
 
             $data = self::getReviewsDataWithReviewCountAndPhotosByMerchant($memprofile['uid'], 'ORDER BY r.date DESC LIMIT ' . $limit);
 
-            if ($data) {
+            if ($db->num_rows($data)) {
                 $entries = self::buildProductListing($data);
                 eval('$community_reviews_merchant_widget = "' . self::tpl('merchant_widget') . '";');
             } else {
