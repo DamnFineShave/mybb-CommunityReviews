@@ -317,15 +317,20 @@ function community_reviews_uninstall()
         require_once PLUGINLIBRARY;
     }
 
+    community_reviews_deactivate();
+
     // database
     $db->write_query('SET foreign_key_checks = 0');
 
     $db->drop_table('community_reviews_categories');
     $db->drop_table('community_reviews_fields');
     $db->drop_table('community_reviews_products');
-    $db->drop_table('community_reviews_photos');
     $db->drop_table('community_reviews');
+    $db->drop_table('community_reviews_photos');
     $db->drop_table('community_reviews_review_fields');
+    $db->drop_table('community_reviews_merchants');
+    $db->drop_table('community_reviews_comments');
+    $db->drop_table('community_reviews_product_feed');
 
     $db->write_query('SET foreign_key_checks = 1');
 
@@ -403,7 +408,7 @@ function community_reviews_deactivate()
     }
 
     // templates
-    $PL->templates_delete('community_reviews', true);
+    $PL->templates_delete('communityreviews', true);
 
     // stylesheets
     $PL->stylesheet_delete('community_reviews', true);
