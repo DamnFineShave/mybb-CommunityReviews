@@ -12,10 +12,6 @@ trait CommunityReviewsSectionsFrontend
         add_breadcrumb($lang->community_reviews_location, self::url('index'));
 
         // main page layout
-        $sectionSideContent = '';
-
-        $categoryListing = self::buildCategoryListing();
-        eval('$sectionSideContent .= "' . self::tpl('category_listing') . '";');
 
         // section dispatch
         if ($mybb->get_input('category')) {
@@ -30,7 +26,16 @@ trait CommunityReviewsSectionsFrontend
             extract(self::frontendSectionIndex());
         }
 
-        eval('$page = "' . self::tpl('page') . '";');
+        if (isset($mainTemplate)) {
+            eval('$page = "' . self::tpl($mainTemplate) . '";');
+        } else {
+            $sectionSideContent = '';
+
+            $categoryListing = self::buildCategoryListing();
+            eval('$sectionSideContent .= "' . self::tpl('category_listing') . '";');
+
+            eval('$page = "' . self::tpl('page') . '";');
+        }
 
         output_page($page);
 
@@ -558,7 +563,7 @@ trait CommunityReviewsSectionsFrontend
                 return [
                     'title' => $title,
                     'content' => $content,
-                    'sectionSideContent' => '',
+                    'mainTemplate' => 'profile_page',
                 ];
 
             } else {

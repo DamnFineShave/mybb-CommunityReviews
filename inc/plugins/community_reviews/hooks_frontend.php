@@ -69,6 +69,7 @@ trait CommunityReviewsHooksFrontend
                     'product_card_photo',
                     'product_card',
                     'product',
+                    'profile_page',
                     'rating_star',
                     'rating_stars_empty',
                     'rating_stars',
