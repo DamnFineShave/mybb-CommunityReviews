@@ -124,13 +124,11 @@ trait CommunityReviewsSnippets
 
         $starRating = self::buildRating($product['cached_rating']);
 
-        $title = $product['name'];
-
-        if (mb_strlen($title) + 1 > self::settings('product_name_length_card')) {
-            $title = mb_substr($title, 0, self::settings('product_name_length_card')) . '&hellip;';
+        if (mb_strlen($product['name']) + 1 > self::settings('product_name_length_card')) {
+            $title = htmlspecialchars_uni(mb_substr($product['name'], 0, self::settings('product_name_length_card'))) . '&hellip;';
+        } else {
+            $title = htmlspecialchars_uni($product['name']);
         }
-
-        $title = htmlspecialchars_uni($product['name']);
 
         if (!$isReview) {
             $url = self::url('product', $product['id'], self::toSlug($product['name']));
