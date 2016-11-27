@@ -236,7 +236,7 @@ trait CommunityReviewsHooksFrontend
         }
 
         // merchant widget
-        if (is_member(self::settings('merchant_group', $memprofile))) {
+        if (is_member(self::settings('merchant_group'), $memprofile)) {
             $url = self::url('merchant_reviews', $memprofile['uid']);
 
             $limit = (int)self::settings('widget_items_limit');
