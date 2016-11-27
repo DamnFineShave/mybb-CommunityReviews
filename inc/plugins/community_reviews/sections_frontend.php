@@ -240,7 +240,7 @@ trait CommunityReviewsSectionsFrontend
                 eval('$sectionSideContent .= "' . self::tpl('sorting_options') . '";');
 
                 // product listing
-                $products = self::getProductsWithReviewCountInCategory($category['id'], $listManager->sql());
+                $products = self::getProductsWithReviewCountAndPhotosInCategory($category['id'], $listManager->sql());
 
                 $productListing = self::buildProductListing($products);
 

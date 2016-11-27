@@ -286,19 +286,38 @@ trait CommunityReviewsData
         return $products;
     }
 
-    public static function getProductsWithReviewCountInCategory($categoryId, $statements = '')
+    public static function getProductsWithReviewCountAndPhotosInCategory($categoryId, $statements = '')
     {
         global $db;
-        return $db->query("
+
+        $query = $db->query("
             SELECT
-                p.*, COUNT(r.id) AS num_reviews
+                p.*, COUNT(r.id) AS num_reviews, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(r.id) AS num_reviews
             FROM
                 " . TABLE_PREFIX . "community_reviews_products p
+                INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
+                INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=p.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews r ON r.product_id=p.id
             WHERE category_id=" . (int)$categoryId . "
             GROUP BY p.id
             $statements
         ");
+
+        $products = [];
+
+        while ($row = $db->fetch_array($query)) {
+            $products[ $row['id'] ] = $row;
+        }
+
+        $productIds = array_column($products, 'id');
+
+        $productsPhotos = self::getProductsPhotos($productIds);
+
+        foreach ($productsPhotos as $photo) {
+            $products[ $photo['product_id'] ]['photos'][] = $photo['thumbnail_url'];
+        }
+
+        return $products;
     }
 
     public static function countProducts($where = false)
@@ -757,7 +776,7 @@ trait CommunityReviewsData
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews pr ON pr.product_id=r.product_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
             WHERE rm.user_id=" . (int)$userId . "
-            GROUP BY r.id, ph.thumbnail_url
+            GROUP BY r.id, r.id
             $statements
         ");
     }
