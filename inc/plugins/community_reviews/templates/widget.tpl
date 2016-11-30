@@ -3,8 +3,8 @@
         <tr>
             <td class="thead">
                 <p class="community-reviews__widget__controls">
-                    <i class="fa fa-fw fa-chevron-left community-reviews__widget__controls__previous"></i>
-                    <i class="fa fa-fw fa-chevron-right community-reviews__widget__controls__next"></i>
+                    <a class="controls community-reviews__widget__controls__previous"></a>
+                    <a class="controls community-reviews__widget__controls__next"></a>
                 </p>
                 <strong>{$lang->community_reviews_recent_reviews}</strong>
             </td>

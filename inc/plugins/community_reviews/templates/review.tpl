@@ -7,7 +7,7 @@
         </div>
         <div class="community-reviews__controls">
             <p class="community-reviews__controls__moderation">{$reportLink}{$editLink}{$deleteLink}</p>
-            <p class="community-reviews__controls__id"><a href="{$reviewUrl}"><i class="fa fa-fw fa-link"></i></a></p>
+            <p class="community-reviews__controls__id"><a href="{$reviewUrl}" class="community-reviews__controls__link"></a></p>
         </div>
     </div>
     <div class="community-reviews__review__body">

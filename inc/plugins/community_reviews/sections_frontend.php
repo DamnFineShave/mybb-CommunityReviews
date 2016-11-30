@@ -414,15 +414,15 @@ trait CommunityReviewsSectionsFrontend
                 $productTitle = htmlspecialchars_uni($product['name']);
 
                 if (self::isUser()) {
-                    $reportLink = '<a href="javascript:communityReviews.reportProduct(' . $product['id'] . ')" title="' . $lang->community_reviews_report . '"><i class="fa fa-fw fa-flag"></i></a>';
+                    $reportLink = '<a href="javascript:communityReviews.reportProduct(' . $product['id'] . ')" title="' . $lang->community_reviews_report . '" class="community-reviews__controls__report"></a>';
                 } else {
                     $reportLink = '';
                 }
 
                 if (self::isMod()) {
-                    $editLink = '<a href="' . self::url('edit_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_edit . '"><i class="fa fa-fw fa-pencil"></i></a>';
-                    $deleteLink = '<a href="' . self::url('delete_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_delete . '"><i class="fa fa-fw fa-trash"></i></a>';
-                    $mergeLink = '<a href="' . self::url('merge_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_merge . '"><i class="fa fa-fw fa-code-fork"></i></a>';
+                    $editLink = '<a href="' . self::url('edit_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_edit . '" class="community-reviews__controls__edit"></a>';
+                    $deleteLink = '<a href="' . self::url('delete_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_delete . '" class="community-reviews__controls__delete"></a>';
+                    $mergeLink = '<a href="' . self::url('merge_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_merge . '" class="community-reviews__controls__merge"></a>';
                 } else {
                     $editLink = '';
                     $deleteLink = '';

@@ -179,14 +179,14 @@ trait CommunityReviewsSnippets
         }
 
         if (self::isUser()) {
-            $reportLink = '<a href="javascript:communityReviews.reportReview(' . $review['id'] . ')" title="' . $lang->community_reviews_report . '"><i class="fa fa-fw fa-flag"></i></a>';
+            $reportLink = '<a href="javascript:communityReviews.reportReview(' . $review['id'] . ')" title="' . $lang->community_reviews_report . '" class="community-reviews__controls__report"></a>';
         } else {
             $reportLink = '';
         }
 
         if (self::isModOrAuthor($review['user_id'])) {
-            $editLink = '<a href="' . self::url('edit_review', $product['id'], self::toSlug($product['name']), (int)$review['id']) . '" title="' . $lang->community_reviews_edit . '"><i class="fa fa-fw fa-pencil"></i></a>';
-            $deleteLink = '<a href="' . self::url('delete_review', $product['id'], self::toSlug($product['name']), (int)$review['id']) . '" title="' . $lang->community_reviews_delete . '"><i class="fa fa-fw fa-trash"></i></a>';
+            $editLink = '<a href="' . self::url('edit_review', $product['id'], self::toSlug($product['name']), (int)$review['id']) . '" title="' . $lang->community_reviews_edit . '" class="community-reviews__controls__edit"></a>';
+            $deleteLink = '<a href="' . self::url('delete_review', $product['id'], self::toSlug($product['name']), (int)$review['id']) . '" title="' . $lang->community_reviews_delete . '" class="community-reviews__controls__delete"></a>';
         }
 
         // properties
@@ -321,14 +321,14 @@ trait CommunityReviewsSnippets
         $commentUrl = self::url('comment', $product['id'], self::toSlug($product['name']), $comment['id']);
 
         if (self::isUser()) {
-            $reportLink = '<a href="javascript:communityReviews.reportComment(' . $comment['id'] . ')" title="' . $lang->community_reviews_report . '"><i class="fa fa-fw fa-flag"></i></a>';
+            $reportLink = '<a href="javascript:communityReviews.reportComment(' . $comment['id'] . ')" title="' . $lang->community_reviews_report . '" class="community-reviews__controls__report"></a>';
         } else {
             $reportLink = '';
         }
 
         if (self::isModOrAuthor($comment['user_id'])) {
-            $editLink = '<a href="' . self::url('edit_comment', $product['id'], self::toSlug($product['name']), (int)$comment['id']) . '" title="' . $lang->community_reviews_edit . '"><i class="fa fa-fw fa-pencil"></i></a>';
-            $deleteLink = '<a href="' . self::url('delete_comment', $product['id'], self::toSlug($product['name']), (int)$comment['id']) . '" title="' . $lang->community_reviews_delete . '"><i class="fa fa-fw fa-trash"></i></a>';
+            $editLink = '<a href="' . self::url('edit_comment', $product['id'], self::toSlug($product['name']), (int)$comment['id']) . '" title="' . $lang->community_reviews_edit . '" class="community-reviews__controls__edit"></a>';
+            $deleteLink = '<a href="' . self::url('delete_comment', $product['id'], self::toSlug($product['name']), (int)$comment['id']) . '" title="' . $lang->community_reviews_delete . '" class="community-reviews__controls__delete"></a>';
         }
 
         $commentValue = self::parseComment($comment['comment'], $comment['username']);
