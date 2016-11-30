@@ -122,7 +122,7 @@ trait CommunityReviewsSnippets
 
         $description = '';
 
-        $starRating = self::buildRating($product['cached_rating']);
+        $starRating = self::buildRating($isReview && isset($product['review_rating']) ? $product['review_rating'] : $product['cached_rating']);
 
         if (mb_strlen($product['name']) + 1 > self::settings('product_name_length_card')) {
             $title = htmlspecialchars_uni(mb_substr($product['name'], 0, self::settings('product_name_length_card'))) . '&hellip;';
