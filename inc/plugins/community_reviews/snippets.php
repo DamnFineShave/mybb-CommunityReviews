@@ -136,6 +136,8 @@ trait CommunityReviewsSnippets
             $url = self::url('review', $product['product_id'], self::toSlug($product['name']), $product['id']);
         }
 
+        $product['url'] = $url;
+
         if (!empty($product['photos'])) {
             $photos = self::buildCardThumbnails($product, $product['photos']);
         } elseif (!empty($product['thumbnail_url'])) {
