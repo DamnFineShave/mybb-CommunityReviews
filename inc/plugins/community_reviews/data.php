@@ -747,7 +747,7 @@ trait CommunityReviewsData
         global $db;
         return $db->query("
             SELECT
-                r.*, p.category_id, p.name, p.views, p.cached_rating, AVG(rf.rating) AS review_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
+                r.*, p.category_id, p.name, p.views, p.cached_rating, AVG(rf.rating) AS review_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(DISTINCT pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
             FROM
                 " . TABLE_PREFIX . "community_reviews r
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_products p ON p.id=r.product_id
@@ -767,7 +767,7 @@ trait CommunityReviewsData
         global $db;
         return $db->query("
             SELECT
-                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
+                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(DISTINCT pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
             FROM
                 " .  TABLE_PREFIX . "community_reviews_merchants rm
                 INNER JOIN " . TABLE_PREFIX . "community_reviews r ON r.id=rm.review_id
