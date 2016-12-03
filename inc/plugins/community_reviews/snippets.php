@@ -446,11 +446,11 @@ trait CommunityReviewsSnippets
 
         $url = self::url('review', (int)$row['product_id'], self::toSlug($row['name']), (int)$row['id']);
 
-        $title = $row['name'];
-        if (mb_strlen($title) + 1 > self::settings('product_name_length_card')) {
-            $title = mb_substr($title, 0, self::settings('product_name_length_card')) . '&hellip;';
+        if (mb_strlen($row['name']) + 1 > self::settings('product_name_length_card')) {
+            $title = htmlspecialchars_uni(mb_substr($row['name'], 0, self::settings('product_name_length_card'))) . '&hellip;';
+        } else {
+            $title = htmlspecialchars_uni($row['name']);
         }
-        $title = htmlspecialchars_uni($title);
 
         if (isset($row['username'])) {
             $profileLink = build_profile_link(format_name(htmlspecialchars_uni($row['username']), $row['usergroup'], $row['displaygroup']), $row['user_id']);
