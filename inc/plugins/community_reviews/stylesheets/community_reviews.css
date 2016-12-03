@@ -7,6 +7,7 @@
 .community-reviews__widget__entry__text { flex: 1; }
 .community-reviews__widget__entry__title { font-weight: bold; }
 .community-reviews__widget__entry__meta { font-size: 11px; }
+.community-reviews__widget__links { float: right; }
 .community-reviews__widget__controls { float: right; }
 .community-reviews__widget__controls a { margin: -3px 0; padding: 6px 4px; border-radius: 2px; background: rgba(0,0,0,0.1); font-size: 10px; cursor: pointer; visibility: hidden; }
 .community-reviews__widget__controls a:focus,
@@ -123,7 +124,7 @@
 .community-reviews__comment { margin: 4px; padding: 10px; border-left: solid 2px rgba(0,0,0,0.1); }
 
 .community-reviews__controls a, .community-reviews__widget__controls a { display: inline-block; font: normal normal normal 14px/1 FontAwesome; font-size: inherit; text-rendering: auto; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; width: 1.28571429em; text-align: center; }
-.community-reviews__controls a:hover, .community-reviews__controls a:focus, .community-reviews__widget__controls a:hover, .community-reviews__widget__controls a:focus { text-decoration: none; }
+.community-reviews__controls a:hover, .community-reviews__controls a:focus, .community-reviews__widget__controls a:hover, .community-reviews__widget__controls a:focus { text-decoration: none !important; }
 .community-reviews__widget__controls__previous:before { content: "\f053"; }
 .community-reviews__widget__controls__next:before { content: "\f054"; }
 .community-reviews__controls__link:before { content: "\f0c1"; }

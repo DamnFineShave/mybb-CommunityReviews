@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <td class="thead">
-                <p class="community-reviews__widget__controls">
+                <p class="community-reviews__widget__links">
                     <a href="{$url}">{$lang->community_reviews_view_more}</a>
                 </p>
                 <strong>{$lang->community_reviews_merchant_widget}</strong>
