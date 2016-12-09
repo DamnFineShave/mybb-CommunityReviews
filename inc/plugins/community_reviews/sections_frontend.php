@@ -278,8 +278,11 @@ trait CommunityReviewsSectionsFrontend
                     $content = self::confirmAction([
                         'permissions' => self::isModOrAuthor($review['user_id']),
                         'message' => $lang->community_reviews_confirm_delete_review,
-                        'action_callback' => [self, 'deleteReview'],
-                        'action_parameters' => [$review['id']],
+                        'action_callback' => function () use ($product, $review) {
+                            self::deleteReview($review['id']);
+                            self::updateProductRating($product['id']);
+                        },
+                        'action_parameters' => [],
                         'redirect_url' => self::url('product', $product['id'], self::toSlug($product['name'])),
                         'redirect_message' => $lang->community_reviews_review_deleted,
                     ]);
