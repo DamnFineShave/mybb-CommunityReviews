@@ -352,6 +352,15 @@ trait CommunityReviewsData
         ");
     }
 
+    public static function sumProductViews($where = false)
+    {
+        global $db;
+        return $db->fetch_field(
+            $db->simple_select('community_reviews_products', 'SUM(views) as n', $where),
+            'n'
+        );
+    }
+
     public static function addProduct($data)
     {
         global $db;

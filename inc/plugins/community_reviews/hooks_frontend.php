@@ -50,6 +50,7 @@ trait CommunityReviewsHooksFrontend
                     'multipage_jump_page',
                 ]);
                 self::loadTemplates([
+                    'add_comment',
                     'add_product',
                     'add_review_data',
                     'add_review_data2',
@@ -79,6 +80,7 @@ trait CommunityReviewsHooksFrontend
                     'review_property',
                     'review',
                     'sorting_options',
+                    'statistics',
                 ], 'community_reviews_');
             }
         } elseif (defined('THIS_SCRIPT') && THIS_SCRIPT == 'member.php') {

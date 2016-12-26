@@ -12,6 +12,9 @@ $l['community_reviews_product_photos'] = 'Product photos';
 $l['community_reviews_product_photos_description'] = 'You can select more than one photo in the select box.';
 $l['community_reviews_product_merchants'] = 'Product merchant';
 $l['community_reviews_product_merchants_description'] = 'You can specify a merchant registered on this board.';
+$l['community_reviews_statistics_reviews'] = 'Reviews';
+$l['community_reviews_statistics_comments'] = 'Comments';
+$l['community_reviews_statistics_product_views'] = 'Views';
 
 // locations pointers
 $l['community_reviews_pointer_product'] = 'Product <a href="{1}">#{2}</a>';
@@ -44,6 +47,7 @@ $l['community_reviews_reviews_only'] = 'Show reviews only';
 // sections
 $l['community_reviews_categories'] = 'Review categories';
 $l['community_reviews_sorting_options'] = 'Sorting options';
+$l['community_reviews_statistics'] = 'Statistics';
 $l['community_reviews_recent_products'] = 'Recent products';
 $l['community_reviews_recent_reviews'] = 'Recent comments';
 $l['community_reviews_category'] = 'Product reviews in <span>{1}</span>';

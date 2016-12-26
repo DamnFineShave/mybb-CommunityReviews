@@ -23,11 +23,15 @@
 .community-reviews__sections__section--side:empty { display: none; }
 .community-reviews__sections__section--main { padding-left: 20px; }
 
-.community-reviews__category-listing {}
 .community-reviews__category-listing__category { margin: 8px; }
 .community-reviews__category-listing__category__title { display: inline-block; font-size: 14px; font-weight: bold; }
 .community-reviews__category-listing__category__label { display: inline-block; padding: 4px; color: #666; border: solid 1px rgba(0,0,0,0.1); border-radius: 3px; font-size: 11px; }
 .community-reviews__category-listing__category__label[data-amount="0"] { display: none; }
+
+.community-reviews__statistics { display: flex; margin: -2px; }
+.community-reviews__statistics__entry { flex: 2; margin: 2px; padding: 4px; border: solid 1px rgba(0,0,0,0.05); border-radius: 2px; box-shadow: 0 2px 2px rgba(0,0,0,0.02); text-align: center; }
+.community-reviews__statistics__entry__title { font-size: 11px; font-weight: bold; text-transform: uppercase; }
+.community-reviews__statistics__entry__value { font-size: 18px; }
 
 .community-reviews__content-options { display: flex; margin: 10px 0; }
 .community-reviews__modifiers { flex: 1; padding: 6px; }

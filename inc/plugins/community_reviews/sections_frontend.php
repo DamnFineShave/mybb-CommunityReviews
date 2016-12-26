@@ -27,7 +27,9 @@ trait CommunityReviewsSectionsFrontend
         } elseif ($mybb->get_input('merchant')) {
             extract(self::frontendSectionMerchantReviews());
         } else {
-            extract(self::frontendSectionIndex());
+            extract(self::frontendSectionIndex(compact([
+                'sectionSideContent',
+            ])));
         }
 
         if (isset($mainTemplate)) {
@@ -64,9 +66,16 @@ trait CommunityReviewsSectionsFrontend
 
         eval('$content = "' . self::tpl('index') . '";');
 
+        $reviewCount = self::countReviews();
+        $commentCount = self::countComments();
+        $productViewCount = self::sumProductViews();
+
+        eval('$sectionSideContent .= "' . self::tpl('statistics') . '";');
+
         return [
             'title' => $title,
             'content' => $content,
+            'sectionSideContent' => $sectionSideContent,
         ];
     }
 
