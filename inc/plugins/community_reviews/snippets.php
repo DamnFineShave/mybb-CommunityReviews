@@ -186,8 +186,11 @@ trait CommunityReviewsSnippets
             $reportLink = '';
         }
 
-        if (self::isModOrAuthor($review['user_id'])) {
+        if (self::canEditUserContent($review['user_id'])) {
             $editLink = '<a href="' . self::url('edit_review', $product['id'], self::toSlug($product['name']), (int)$review['id']) . '" title="' . $lang->community_reviews_edit . '" class="community-reviews__controls__edit"></a>';
+        }
+
+        if (self::canDeleteUserContent($review['user_id'])) {
             $deleteLink = '<a href="' . self::url('delete_review', $product['id'], self::toSlug($product['name']), (int)$review['id']) . '" title="' . $lang->community_reviews_delete . '" class="community-reviews__controls__delete"></a>';
         }
 
@@ -328,9 +331,16 @@ trait CommunityReviewsSnippets
             $reportLink = '';
         }
 
-        if (self::isModOrAuthor($comment['user_id'])) {
+        if (self::canEditUserContent($comment['user_id'])) {
             $editLink = '<a href="' . self::url('edit_comment', $product['id'], self::toSlug($product['name']), (int)$comment['id']) . '" title="' . $lang->community_reviews_edit . '" class="community-reviews__controls__edit"></a>';
+        } else {
+            $editLink = '';
+        }
+
+        if (self::canDeleteUserContent($comment['user_id'])) {
             $deleteLink = '<a href="' . self::url('delete_comment', $product['id'], self::toSlug($product['name']), (int)$comment['id']) . '" title="' . $lang->community_reviews_delete . '" class="community-reviews__controls__delete"></a>';
+        } else {
+            $deleteLink = '';
         }
 
         $commentValue = self::parseComment($comment['comment'], $comment['username']);

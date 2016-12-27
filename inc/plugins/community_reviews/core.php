@@ -24,11 +24,38 @@ trait CommunityReviewsCore
         );
     }
 
-    public static function isModOrAuthor($authorId)
+    public static function canEditOwnContent()
+    {
+        $array = self::settingsGetCsv('groups_edit_own');
+        return $array[0] == -1 || is_member($array);
+    }
+
+    public static function canDeleteOwnContent()
+    {
+        $array = self::settingsGetCsv('groups_delete_own');
+        return $array[0] == -1 || is_member($array);
+    }
+
+    public static function canEditUserContent($authorId)
     {
         global $mybb;
-        return $mybb->user['uid'] === $authorId || self::isMod();
+
+        return self::isMod() || (
+            self::canEditOwnContent() &&
+            $mybb->user['uid'] == $authorId
+        );
     }
+
+    public static function canDeleteUserContent($authorId)
+    {
+        global $mybb;
+
+        return self::isMod() || (
+            self::canDeleteOwnContent() &&
+            $mybb->user['uid'] == $authorId
+        );
+    }
+
 
     // data processing
     public static function categoryArray($escapeHtml = false)

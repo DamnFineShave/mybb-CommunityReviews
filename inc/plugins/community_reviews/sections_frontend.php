@@ -43,9 +43,11 @@ trait CommunityReviewsSectionsFrontend
         exit;
     }
 
-    public static function frontendSectionIndex()
+    public static function frontendSectionIndex($data)
     {
         global $db, $lang;
+
+        extract($data);
 
         $title = $lang->community_reviews_location;
 
@@ -89,9 +91,9 @@ trait CommunityReviewsSectionsFrontend
             add_breadcrumb(htmlspecialchars_uni($category['name']), self::url('category', $category['id'], self::toSlug($category['name'])));
 
             if ($productId = $mybb->get_input('delete', MyBB::INPUT_INT)) {
-                if (self::isMod() && $product = self::getProduct($productId)) {
+                if ($product = self::getProduct($productId)) {
                     $content = self::confirmAction([
-                        'permissions' => self::isMod(),
+                        'permissions' => self::canDeleteUserContent($product['user_id']),
                         'message' => $lang->community_reviews_confirm_delete_product,
                         'action_callback' => [self, 'deleteProduct'],
                         'action_parameters' => [$product['id']],
@@ -102,7 +104,7 @@ trait CommunityReviewsSectionsFrontend
                     self::redirect(self::url('index'));
                 }
             } elseif ($productId = $mybb->get_input('merge', MyBB::INPUT_INT)) {
-                if ($product = self::getProduct($productId)) {
+                if ($product = self::getProduct($productId) && self::isMod()) {
                     $sectionTitle = $lang->community_reviews_merge_product;
                     $formActionUrl = self::url('merge_product', $category['id'], self::toSlug($category['name']), $product['id']);
                     $errors = '';
@@ -127,7 +129,7 @@ trait CommunityReviewsSectionsFrontend
             } elseif ($mybb->get_input('add') || $mybb->get_input('edit')) {
                 if ($productId = $mybb->get_input('edit', MyBB::INPUT_INT)) {
                     if ($product = self::getProduct($productId)) {
-                        if (!self::isMod()) {
+                        if (!self::canEditUserContent($product['user_id'])) {
                             error_no_permission();
                         } else {
                             $title = $lang->community_reviews_update_product . '  - ' . $lang->community_reviews_location;
@@ -285,7 +287,7 @@ trait CommunityReviewsSectionsFrontend
             if ($reviewId = $mybb->get_input('delete', MyBB::INPUT_INT)) {
                 if ($review = self::getReview($reviewId)) {
                     $content = self::confirmAction([
-                        'permissions' => self::isModOrAuthor($review['user_id']),
+                        'permissions' => self::canDeleteUserContent($review['user_id']),
                         'message' => $lang->community_reviews_confirm_delete_review,
                         'action_callback' => function () use ($product, $review) {
                             self::deleteReview($review['id']);
@@ -303,7 +305,7 @@ trait CommunityReviewsSectionsFrontend
                     $review['photos'] = self::getReviewPhotos($review['id']);
                     $review['merchants_data'] = self::getReviewMerchantsData($review['id']);
 
-                    if (!self::isModOrAuthor($review['user_id'])) {
+                    if (!self::canEditUserContent($review['user_id'])) {
                         error_no_permission();
                     } else {
                         $title = $lang->community_reviews_update_review . '  - ' . $lang->community_reviews_location;
@@ -313,7 +315,6 @@ trait CommunityReviewsSectionsFrontend
                 } else {
                     $review = false;
                     $review['merchants_data'] = [];
-
 
                     if (!self::isUser()) {
                         error_no_permission();
@@ -365,7 +366,7 @@ trait CommunityReviewsSectionsFrontend
             } elseif ($commentId = $mybb->get_input('delete_comment', MyBB::INPUT_INT)) {
                 if ($comment = self::getComment($commentId)) {
                     $content = self::confirmAction([
-                        'permissions' => self::isModOrAuthor($comment['user_id']),
+                        'permissions' => self::canDeleteUserContent($comment['user_id']),
                         'message' => $lang->community_reviews_confirm_delete_comment,
                         'action_callback' => [self, 'deleteComment'],
                         'action_parameters' => [$comment['id']],
@@ -377,7 +378,7 @@ trait CommunityReviewsSectionsFrontend
                 }
             } elseif ($mybb->get_input('add_comment') || $mybb->get_input('edit_comment')) {
                 if ($mybb->get_input('edit_comment', MyBB::INPUT_INT) && $comment = self::getComment($mybb->get_input('edit_comment', MyBB::INPUT_INT))) {
-                    if (!self::isModOrAuthor($comment['user_id'])) {
+                    if (!self::canEditUserContent($comment['user_id'])) {
                         error_no_permission();
                     } else {
                         $title = $lang->community_reviews_update_comment . '  - ' . $lang->community_reviews_location;
@@ -431,13 +432,21 @@ trait CommunityReviewsSectionsFrontend
                     $reportLink = '';
                 }
 
-                if (self::isMod()) {
+                if (self::canEditUserContent($product['user_id'])) {
                     $editLink = '<a href="' . self::url('edit_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_edit . '" class="community-reviews__controls__edit"></a>';
-                    $deleteLink = '<a href="' . self::url('delete_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_delete . '" class="community-reviews__controls__delete"></a>';
-                    $mergeLink = '<a href="' . self::url('merge_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_merge . '" class="community-reviews__controls__merge"></a>';
                 } else {
                     $editLink = '';
+                }
+
+                if (self::canDeleteUserContent($product['user_id'])) {
+                    $deleteLink = '<a href="' . self::url('delete_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_delete . '" class="community-reviews__controls__delete"></a>';
+                } else {
                     $deleteLink = '';
+                }
+
+                if (self::isMod()) {
+                    $mergeLink = '<a href="' . self::url('merge_product', $category['id'], self::toSlug($category['name']), (int)$product['id']) . '" title="' . $lang->community_reviews_merge . '" class="community-reviews__controls__merge"></a>';
+                } else {
                     $mergeLink = '';
                 }
 

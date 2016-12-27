@@ -257,6 +257,18 @@ desc=Newest to oldest',
                 'optionscode' => 'numeric',
                 'value'       => '30',
             ],
+            'groups_edit_own' => [
+                'title'       => 'Group permissions: Deleting own content',
+                'description' => 'User groups that can delete own reviews.',
+                'optionscode' => 'groupselect',
+                'value'       => '',
+            ],
+            'groups_delete_own' => [
+                'title'       => 'Group permissions: Editing own content',
+                'description' => 'User groups that can edit own reviews.',
+                'optionscode' => 'groupselect',
+                'value'       => '',
+            ],
             'groups_mod' => [
                 'title'       => 'Group permissions: Moderation',
                 'description' => 'User groups that can moderate reviews (edit and delete).',
