@@ -84,6 +84,12 @@ $l['setting_product_name_length_limit_desc'] = 'Limits the length of Product tit
 $l['setting_product_name_length_card'] = 'Name length limit on product cards';
 $l['setting_product_name_length_card_desc'] = 'Limits the length of titles displayed on Product cards.';
 
+$l['setting_groups_edit_own'] = 'Group permissions: Deleting own content';
+$l['setting_groups_edit_own_desc'] = 'User groups that can delete own reviews.';
+
+$l['setting_groups_delete_own'] = 'Group permissions: Editing own content';
+$l['setting_groups_delete_own_desc'] = 'User groups that can edit own reviews.';
+
 $l['setting_groups_mod'] = 'Group permissions: Moderation';
 $l['setting_groups_mod_desc'] = 'User groups that can moderate reviews (edit and delete).';
 
