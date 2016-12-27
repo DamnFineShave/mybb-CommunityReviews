@@ -127,6 +127,8 @@ trait CommunityReviewsCore
             if ($mybb->seo_support && self::$forceUrlFormat != 'raw') {
                 self::$urlPatterns = [
                     'index' => '/reviews',
+                    'search' => '/reviews-search',
+                    'search_keywords' => '/reviews-search?keywords=%s',
                     'category' => '/reviews-category-%d-%s',
                     'add_product' => '/reviews-category-%d-%s?add=1',
                     'edit_product' => '/reviews-category-%d-%s?edit=%d',
@@ -146,6 +148,8 @@ trait CommunityReviewsCore
             } else {
                 self::$urlPatterns = [
                     'index' => '/index.php?action=reviews',
+                    'search' => '/index.php?action=reviews&search=1',
+                    'search_keywords' => '/index.php?action=reviews&search=1&keywords=%s',
                     'category' => '/index.php?action=reviews&category=%d',
                     'add_product' => '/index.php?action=reviews&category=%d&add=1',
                     'edit_product' => '/index.php?action=reviews&category=%d&edit=%d',
@@ -186,11 +190,11 @@ trait CommunityReviewsCore
         $slug = $string;
 
         $slug = iconv('UTF-8', 'ASCII//TRANSLIT', $slug);
-    	$slug = preg_replace('/[^a-zA-Z0-9\/_|+ -]/', '', $slug);
-    	$slug = strtolower(trim($slug, '-'));
-    	$slug = preg_replace("/[\/_|+ -]+/", $delimiter, $slug);
+        $slug = preg_replace('/[^a-zA-Z0-9\/_|+ -]/', '', $slug);
+        $slug = strtolower(trim($slug, '-'));
+        $slug = preg_replace("/[\/_|+ -]+/", $delimiter, $slug);
 
-    	return $slug;
+        return $slug;
     }
 
     public static function redirect($url)

@@ -68,9 +68,9 @@ trait CommunityReviewsHooksACP
                             flash_message($lang->community_reviews_admin_category_deleted, 'success');
                             admin_redirect('index.php?module=config-reviews&action=categories');
                         }
-                	} else {
-                		$page->output_confirm_action('index.php?module=config-reviews&action=categories&delete=' . $mybb->get_input('delete', MyBB::INPUT_INT), $lang->community_reviews_admin_category_delete_confirm);
-                	}
+                    } else {
+                        $page->output_confirm_action('index.php?module=config-reviews&action=categories&delete=' . $mybb->get_input('delete', MyBB::INPUT_INT), $lang->community_reviews_admin_category_delete_confirm);
+                    }
                 } elseif ($mybb->get_input('id')) {
                     // action: update
                     $page->output_header($lang->community_reviews_admin);
@@ -80,7 +80,7 @@ trait CommunityReviewsHooksACP
                         self::updateCategory($mybb->get_input('id'), [
                             'name' => $db->escape_string($mybb->get_input('name')),
                         ]);
-                		flash_message($lang->community_reviews_admin_category_updated, 'success');
+                        flash_message($lang->community_reviews_admin_category_updated, 'success');
                         admin_redirect('index.php?module=config-reviews&action=categories');
                     } else {
                         $item = self::getCategory($mybb->get_input('id', MyBB::INPUT_INT));
@@ -186,9 +186,9 @@ trait CommunityReviewsHooksACP
                             flash_message($lang->community_reviews_admin_field_deleted, 'success');
                             admin_redirect('index.php?module=config-reviews&action=fields');
                         }
-                	} else {
-                		$page->output_confirm_action('index.php?module=config-reviews&action=fields&delete=' . $mybb->get_input('delete', MyBB::INPUT_INT), $lang->community_reviews_admin_field_delete_confirm);
-                	}
+                    } else {
+                        $page->output_confirm_action('index.php?module=config-reviews&action=fields&delete=' . $mybb->get_input('delete', MyBB::INPUT_INT), $lang->community_reviews_admin_field_delete_confirm);
+                    }
                 } elseif ($mybb->get_input('copy')) {
                     // action: update
                     $page->output_header($lang->community_reviews_admin);
@@ -231,7 +231,7 @@ trait CommunityReviewsHooksACP
                         self::updateFields($siblingFields, [
                             'name' => $db->escape_string($mybb->get_input('name')),
                         ]);
-                		flash_message($lang->community_reviews_admin_field_updated, 'success');
+                        flash_message($lang->community_reviews_admin_field_updated, 'success');
                         admin_redirect('index.php?module=config-reviews&action=fields');
                     } else {
                         $item = self::getField($mybb->get_input('id', MyBB::INPUT_INT));
@@ -295,7 +295,7 @@ trait CommunityReviewsHooksACP
 
                         $items = self::getDistinctFieldsWithCategories($listManager->sql());
 
-	                    $form = new Form('index.php?module=config-reviews&action=fields', 'post');
+                        $form = new Form('index.php?module=config-reviews&action=fields', 'post');
                         $formContainer = new FormContainer(sprintf($lang->community_reviews_admin_field_list, $itemsNum));
 
                         $formContainer->output_row_header($listManager->link('name', $lang->community_reviews_admin_name), ['width' => '40%', 'class' => 'align_center']);

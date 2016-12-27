@@ -65,6 +65,7 @@ trait CommunityReviewsHooksFrontend
                     'index',
                     'merchant_reviews',
                     'merge_product',
+                    'message',
                     'page',
                     'product_card_label',
                     'product_card_photo',
@@ -79,6 +80,8 @@ trait CommunityReviewsHooksFrontend
                     'review_photo',
                     'review_property',
                     'review',
+                    'search_form',
+                    'search_results',
                     'sorting_options',
                     'statistics',
                 ], 'community_reviews_');
@@ -144,26 +147,26 @@ trait CommunityReviewsHooksFrontend
         } elseif ($mybb->get_input('action') == 'community_reviews_get_merchants') {
             $query = ltrim($mybb->get_input('query'));
 
-        	if(my_strlen($query) < 2) {
-        		exit;
-        	}
+            if(my_strlen($query) < 2) {
+                exit;
+            }
 
-        	if($mybb->get_input('getone', MyBB::INPUT_INT) == 1) {
-        		$limit = 1;
-        	} else {
-        		$limit = 15;
-        	}
+            if($mybb->get_input('getone', MyBB::INPUT_INT) == 1) {
+                $limit = 1;
+            } else {
+                $limit = 15;
+            }
 
-        	$query_options = [
-        		'order_by' => 'username',
-        		'order_dir' => 'asc',
-        		'limit_start' => 0,
-        		'limit' => $limit
-        	];
+            $query_options = [
+                'order_by' => 'username',
+                'order_dir' => 'asc',
+                'limit_start' => 0,
+                'limit' => $limit
+            ];
 
             $groupId = self::settings('merchant_group');
 
-        	$query = $db->simple_select(
+            $query = $db->simple_select(
                 'users',
                 'uid, username',
                 "(
@@ -176,26 +179,26 @@ trait CommunityReviewsHooksFrontend
                 $query_options
             );
 
-        	if($limit == 1) {
-        		$user = $db->fetch_array($query);
-        		$data = [
+            if($limit == 1) {
+                $user = $db->fetch_array($query);
+                $data = [
                     'id' => $user['username'],
                     'text' => $user['username']
                 ];
-        	} else {
-        		$data = [];
-        		while($user = $db->fetch_array($query)) {
-        			$data[] = [
+            } else {
+                $data = [];
+                while($user = $db->fetch_array($query)) {
+                    $data[] = [
                         'id' => $user['username'],
                         'text' => $user['username']
                     ];
-        		}
-        	}
+                }
+            }
 
             header('Content-type: application/json; charset=' . $charset);
 
-        	echo json_encode($data);
-        	exit;
+            echo json_encode($data);
+            exit;
         }
     }
 
@@ -263,27 +266,27 @@ trait CommunityReviewsHooksFrontend
         if ($report_type == 'community_reviews_product') {
             $item = self::getProduct($mybb->get_input('pid', MyBB::INPUT_INT));
 
-        	if (!$item) {
-        		$error = $lang->error_invalid_report;
-        	} else {
+            if (!$item) {
+                $error = $lang->error_invalid_report;
+            } else {
                 $id = $item['id'];
-        		$id2 = 0;
+                $id2 = 0;
                 $id3 = 0;
-        		$verified = true;
-        		$report_type_db = "type = 'community_reviews_product'";
-        	}
+                $verified = true;
+                $report_type_db = "type = 'community_reviews_product'";
+            }
         } elseif ($report_type == 'community_reviews_review') {
             $item = self::getReview($mybb->get_input('pid', MyBB::INPUT_INT));
 
-        	if (!$item) {
-        		$error = $lang->error_invalid_report;
-        	} else {
+            if (!$item) {
+                $error = $lang->error_invalid_report;
+            } else {
                 $id = $item['id'];
-        		$id2 = 0;
+                $id2 = 0;
                 $id3 = 0;
-        		$verified = true;
-        		$report_type_db = "type = 'community_reviews_review'";
-        	}
+                $verified = true;
+                $report_type_db = "type = 'community_reviews_review'";
+            }
         } elseif ($report_type == 'community_reviews_comment') {
             $item = self::getComment($mybb->get_input('pid', MyBB::INPUT_INT));
 
@@ -384,13 +387,13 @@ trait CommunityReviewsHooksFrontend
 
         if ($report['type'] == 'community_reviews_product') {
             $url = self::url('product', $report['id']);
-        	$report_data['content'] = $lang->sprintf($lang->community_reviews_pointer_product, $url, $report['id']);
+            $report_data['content'] = $lang->sprintf($lang->community_reviews_pointer_product, $url, $report['id']);
         } elseif ($report['type'] == 'community_reviews_review') {
             $url = self::url('review', $communityReviewsCache['reviews'][ $report['id'] ]['product_id'], '', $report['id']);
-        	$report_data['content'] = $lang->sprintf($lang->community_reviews_pointer_review, $url, $report['id']);
+            $report_data['content'] = $lang->sprintf($lang->community_reviews_pointer_review, $url, $report['id']);
         } elseif ($report['type'] == 'community_reviews_comment') {
             $url = self::url('comment', $communityReviewsCache['comments'][ $report['id'] ]['product_id'], '', $report['id']);
-        	$report_data['content'] = $lang->sprintf($lang->community_reviews_pointer_comment, $url, $report['id']);
+            $report_data['content'] = $lang->sprintf($lang->community_reviews_pointer_comment, $url, $report['id']);
         }
 
         self::$forceUrlFormat = false;

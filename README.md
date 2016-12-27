@@ -2,6 +2,7 @@
 
 ### Requirements
 - PHP >= 7.0.0
+- MySQL >= 5.6 (MariaDB >= 10.0.5) with InnoDB
 - https://github.com/frostschutz/MyBB-PluginLibrary
 - http://fontawesome.io/ >= 4.6
 
@@ -23,6 +24,7 @@
    RewriteEngine On
 
    RewriteRule ^reviews$ index.php?action=reviews [L,QSA]
+   RewriteRule ^reviews-search$ index.php?action=reviews&search=1 [L,QSA]
    RewriteRule ^reviews-category-([0-9]+)-[0-9a-z_-]+$ index.php?action=reviews&category=$1 [L,QSA]
    RewriteRule ^reviews-product-([0-9]+)-[0-9a-z_-]+$ index.php?action=reviews&product=$1 [L,QSA]
    RewriteRule ^reviews-merchant-([0-9]+)$ index.php?action=reviews&merchant=$1 [L,QSA]
@@ -31,6 +33,7 @@
 
    ```
   rewrite ^/reviews$ /index.php?action=reviews last;
+  rewrite ^/reviews-search$ /index.php?action=reviews&search=1 last;
   rewrite ^/reviews-category-([0-9]+)-[0-9a-z_-]+$ /index.php?action=reviews&category=$1 last;
   rewrite ^/reviews-product-([0-9]+)-[0-9a-z_-]+$ /index.php?action=reviews&product=$1 last;
   rewrite ^/reviews-merchant-([0-9]+)$ /index.php?action=reviews&merchant=$1 last;

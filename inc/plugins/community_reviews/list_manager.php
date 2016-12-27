@@ -32,12 +32,14 @@ class ListManager
         $this->orderColumns = [];
         $this->orderColumnsAliases = [];
 
-        foreach ($data['order_columns'] as $key => $value) {
-            if (is_numeric($key)) {
-                $this->orderColumns[] = $value;
-            } else {
-                $this->orderColumns[] = $key;
-                $this->orderColumnsAliases[$value] = $key;
+        if (!empty($data['order_columns'])) {
+            foreach ($data['order_columns'] as $key => $value) {
+                if (is_numeric($key)) {
+                    $this->orderColumns[] = $value;
+                } else {
+                    $this->orderColumns[] = $key;
+                    $this->orderColumnsAliases[$value] = $key;
+                }
             }
         }
 
@@ -112,10 +114,10 @@ class ListManager
 
         if ($this->orderColumn && $this->orderDirection) {
             $sql .= "`" . $this->orderColumn . "` " . strtoupper($this->orderDirection);
-        }
 
-        if ($this->orderExtend) {
-            $sql .= ($sql ? ', ' : null) . $this->orderExtend;
+            if ($this->orderExtend) {
+                $sql .= ($sql ? ', ' : null) . $this->orderExtend;
+            }
         }
 
         if ($sql && $orderSyntax) {
@@ -149,19 +151,21 @@ class ListManager
     public function detect()
     {
         // sorting
-        if (
-            isset($this->mybb->input['sortby']) &&
-            in_array($this->mybb->input['sortby'], $this->orderColumns)
-        ) {
-            if ($aliasedColumn = array_search($this->mybb->input['sortby'], $this->orderColumnsAliases)) {
-                $this->orderColumn = $aliasedColumn;
-                $this->orderColumnAlias = $this->mybb->input['sortby'];
+        if ($this->orderColumns) {
+            if (
+                isset($this->mybb->input['sortby']) &&
+                in_array($this->mybb->input['sortby'], $this->orderColumns)
+            ) {
+                if ($aliasedColumn = array_search($this->mybb->input['sortby'], $this->orderColumnsAliases)) {
+                    $this->orderColumn = $aliasedColumn;
+                    $this->orderColumnAlias = $this->mybb->input['sortby'];
+                } else {
+                    $this->orderColumn = $this->mybb->input['sortby'];
+                    $this->orderColumnAlias = false;
+                }
             } else {
-                $this->orderColumn = $this->mybb->input['sortby'];
-                $this->orderColumnAlias = false;
+                $this->orderColumn = $this->orderColumns[0];
             }
-        } else {
-            $this->orderColumn = $this->orderColumns[0];
         }
 
         if (

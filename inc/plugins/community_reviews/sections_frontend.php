@@ -12,7 +12,9 @@ trait CommunityReviewsSectionsFrontend
         add_breadcrumb($lang->community_reviews_location, self::url('index'));
 
         // main page layout
-        $sectionSideContent = '';
+        $searchUrl = self::url('search');
+
+        eval('$sectionSideContent = "' . self::tpl('search_form') . '";');
 
         $categoryListing = self::buildCategoryListing();
         eval('$sectionSideContent .= "' . self::tpl('category_listing') . '";');
@@ -26,6 +28,8 @@ trait CommunityReviewsSectionsFrontend
             extract(self::frontendSectionProduct());
         } elseif ($mybb->get_input('merchant')) {
             extract(self::frontendSectionMerchantReviews());
+        } elseif ($mybb->get_input('search')) {
+            extract(self::frontendSectionSearch());
         } else {
             extract(self::frontendSectionIndex(compact([
                 'sectionSideContent',
@@ -54,7 +58,7 @@ trait CommunityReviewsSectionsFrontend
         $recentProducts = '';
         $recentReviews = '';
 
-        $products = self::getProductsDataWithReviewCountAndPhotos('ORDER BY date DESC LIMIT ' . (int)self::settings('recent_items_limit'));
+        $products = self::getProductsDataWithReviewCountAndPhotos('', 'ORDER BY date DESC LIMIT ' . (int)self::settings('recent_items_limit'));
 
         foreach ($products as $product) {
             $recentProducts .= self::buildProductCard($product);
@@ -543,6 +547,53 @@ trait CommunityReviewsSectionsFrontend
             'content' => $content,
         ];
     }
+
+    public static function frontendSectionSearch()
+    {
+        global $mybb, $db, $lang;
+
+        if ($mybb->get_input('keywords') && strlen($mybb->get_input('keywords')) <= 100) {
+            $title = $lang->community_reviews_search_results;
+            $sectionTitle = $lang->sprintf($lang->community_reviews_search_results_for, htmlspecialchars_uni($mybb->get_input('keywords')));
+
+            add_breadcrumb($title, self::url('search'));
+
+            $itemsNum = self::countMatchProductNameAgainst($mybb->get_input('keywords'));
+
+            $listManager = new CommunityReviews\ListManager([
+                'mybb'          => $mybb,
+                'baseurl'       => self::url('search_keywords', urlencode($mybb->get_input('keywords'))),
+                'items_num'     => $itemsNum,
+                'per_page'      => self::settings('per_page'),
+            ]);
+
+            // pagination
+            $multipage = $listManager->pagination();
+
+            $products = self::matchProductNameAgainst($mybb->get_input('keywords'), $listManager->sql());
+
+            if ($products) {
+                $results = '';
+
+                foreach ($products as $product) {
+                    $results .= self::buildProductCard($product);
+                }
+            } else {
+                $message = $lang->community_reviews_search_no_results;
+                eval('$results .= "' . self::tpl('message') . '";');
+            }
+
+            eval('$content = "' . self::tpl('search_results') . '";');
+
+            return [
+                'title' => $title,
+                'content' => $content,
+            ];
+        } else {
+            self::redirect(self::url('index'));
+        }
+    }
+
 
     public static function frontendSectionMerchantReviews()
     {

@@ -113,6 +113,7 @@ function community_reviews_install()
             `user_id` int(11) NOT NULL,
             `views` int(11) NOT NULL,
             `cached_rating` decimal(3,2) NULL,
+            FULLTEXT `name` (`name`),
             PRIMARY KEY (`id`),
             FOREIGN KEY (`category_id`)
                 REFERENCES " . TABLE_PREFIX . "community_reviews_categories(`id`)

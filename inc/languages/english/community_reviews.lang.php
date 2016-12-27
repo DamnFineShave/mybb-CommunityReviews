@@ -45,6 +45,10 @@ $l['community_reviews_sorting_views'] = 'Views';
 $l['community_reviews_reviews_only'] = 'Show reviews only';
 
 // sections
+$l['community_reviews_search'] = 'Search products';
+$l['community_reviews_search_results'] = 'Search results';
+$l['community_reviews_search_no_results'] = 'No matching reviews have been found.';
+$l['community_reviews_search_results_for'] = 'Search results for <span>{1}</span>';
 $l['community_reviews_categories'] = 'Review categories';
 $l['community_reviews_sorting_options'] = 'Sorting options';
 $l['community_reviews_statistics'] = 'Statistics';
@@ -88,7 +92,7 @@ $l['community_reviews_update_product'] = 'Update Product';
 $l['community_reviews_add_review'] = 'Add Review';
 $l['community_reviews_update_review'] = 'Update Review';
 $l['community_reviews_add_comment'] = 'Add Comment';
-$l['community_reviews_update_comment'] = 'Update Review';
+$l['community_reviews_update_comment'] = 'Update Comment';
 $l['community_reviews_report'] = 'Report';
 $l['community_reviews_edit'] = 'Edit';
 $l['community_reviews_delete'] = 'Delete';

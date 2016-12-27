@@ -253,9 +253,15 @@ trait CommunityReviewsData
         ");
     }
 
-    public static function getProductsDataWithReviewCountAndPhotos($statements = '')
+    public static function getProductsDataWithReviewCountAndPhotos($where = '', $statements = '')
     {
         global $db;
+
+        if ($where) {
+            $whereStatement = 'WHERE ' . $where;
+        } else {
+            $whereStatement = '';
+        }
 
         $query = $db->query("
             SELECT
@@ -265,6 +271,7 @@ trait CommunityReviewsData
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=p.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews r ON r.product_id=p.id
+            $whereStatement
             GROUP BY p.id
             $statements
         ");
@@ -352,6 +359,30 @@ trait CommunityReviewsData
         ");
     }
 
+    public static function countMatchProductNameAgainst($string, $statements = '')
+    {
+        global $db;
+        return $db->fetch_field(
+            $db->query("
+                SELECT
+                    COUNT(id) AS n
+                    FROM (
+                        SELECT
+                            p.id
+                        FROM
+                            " . TABLE_PREFIX . "community_reviews_products p
+                            INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
+                            INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=p.user_id
+                            LEFT JOIN " . TABLE_PREFIX . "community_reviews r ON r.product_id=p.id
+                        WHERE MATCH (p.name) AGAINST ('" . $db->escape_string($string) . "')
+                        GROUP BY p.id
+                        $statements
+                    ) results
+            "),
+            'n'
+        );
+    }
+
     public static function sumProductViews($where = false)
     {
         global $db;
@@ -359,6 +390,12 @@ trait CommunityReviewsData
             $db->simple_select('community_reviews_products', 'SUM(views) as n', $where),
             'n'
         );
+    }
+
+    public static function matchProductNameAgainst($string, $statements)
+    {
+        global $db;
+        return self::getProductsDataWithReviewCountAndPhotos("MATCH (p.name) AGAINST ('" . $db->escape_string($string) . "')", $statements);
     }
 
     public static function addProduct($data)
