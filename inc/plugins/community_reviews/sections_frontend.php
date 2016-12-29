@@ -14,7 +14,7 @@ trait CommunityReviewsSectionsFrontend
         // main page layout
         $searchUrl = self::url('search');
 
-        eval('$sectionSideContent = "' . self::tpl('search_form') . '";');
+        eval('$searchForm = "' . self::tpl('search_form') . '";');
 
         $categoryListing = self::buildCategoryListing();
         eval('$sectionSideContent .= "' . self::tpl('category_listing') . '";');

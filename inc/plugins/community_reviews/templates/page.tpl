@@ -10,7 +10,10 @@
 <div class="community-reviews">
 
 <div class="community-reviews__sections">
-    <div class="community-reviews__sections__section community-reviews__sections__section--side">{$sectionSideContent}</div>
+    <div class="community-reviews__sections__section community-reviews__sections__section--side">
+        {$searchForm}
+        {$sectionSideContent}
+    </div>
     <div class="community-reviews__sections__section community-reviews__sections__section--main">
         {$content}
     </div>
