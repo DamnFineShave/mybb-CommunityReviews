@@ -362,6 +362,9 @@ trait CommunityReviewsData
     public static function countMatchProductNameAgainst($string, $statements = '')
     {
         global $db;
+
+        $string = preg_replace('/(\w+)/i', '$1*', $string);
+
         return $db->fetch_field(
             $db->query("
                 SELECT
@@ -374,7 +377,7 @@ trait CommunityReviewsData
                             INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                             INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=p.user_id
                             LEFT JOIN " . TABLE_PREFIX . "community_reviews r ON r.product_id=p.id
-                        WHERE MATCH (p.name) AGAINST ('" . $db->escape_string($string) . "')
+                        WHERE MATCH (p.name) AGAINST ('" . $db->escape_string($string) . "' IN BOOLEAN MODE)
                         GROUP BY p.id
                         $statements
                     ) results
@@ -395,7 +398,10 @@ trait CommunityReviewsData
     public static function matchProductNameAgainst($string, $statements)
     {
         global $db;
-        return self::getProductsDataWithReviewCountAndPhotos("MATCH (p.name) AGAINST ('" . $db->escape_string($string) . "')", $statements);
+
+        $string = preg_replace('/(\w+)/i', '$1*', $string);
+
+        return self::getProductsDataWithReviewCountAndPhotos("MATCH (p.name) AGAINST ('" . $db->escape_string($string) . "' IN BOOLEAN MODE)", $statements);
     }
 
     public static function addProduct($data)
