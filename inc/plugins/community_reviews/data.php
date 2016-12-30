@@ -363,6 +363,7 @@ trait CommunityReviewsData
     {
         global $db;
 
+        $string = preg_replace('/[+\-><\(\)~*\"@]+/', ' ', $string);
         $string = preg_replace('/(\w+)/i', '$1*', $string);
 
         return $db->fetch_field(
@@ -399,6 +400,7 @@ trait CommunityReviewsData
     {
         global $db;
 
+        $string = preg_replace('/[+\-><\(\)~*\"@]+/', ' ', $string);
         $string = preg_replace('/(\w+)/i', '$1*', $string);
 
         return self::getProductsDataWithReviewCountAndPhotos("MATCH (p.name) AGAINST ('" . $db->escape_string($string) . "' IN BOOLEAN MODE)", $statements);
