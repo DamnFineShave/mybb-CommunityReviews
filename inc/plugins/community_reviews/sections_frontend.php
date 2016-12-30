@@ -72,9 +72,9 @@ trait CommunityReviewsSectionsFrontend
 
         eval('$content = "' . self::tpl('index') . '";');
 
-        $reviewCount = self::countReviews();
-        $commentCount = self::countComments();
-        $productViewCount = self::sumProductViews();
+        $reviewCount = my_number_format(self::countReviews());
+        $commentCount = my_number_format(self::countComments());
+        $productViewCount = my_number_format(self::sumProductViews());
 
         eval('$sectionSideContent .= "' . self::tpl('statistics') . '";');
 
