@@ -126,7 +126,7 @@ trait CommunityReviewsHooksACP
                             'baseurl'       => 'index.php?module=' . $mybb->get_input('module') . '&action=' . $mybb->get_input('action'),
                             'order_columns' => ['name', 'id'],
                             'items_num'     => $itemsNum,
-                            'per_page'      => 20,
+                            'per_page'      => 200,
                         ]);
 
                         $items = self::getCategories(null, $listManager->queryOptions());
