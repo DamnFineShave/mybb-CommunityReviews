@@ -277,6 +277,7 @@ trait CommunityReviewsHooksACP
                         }
                         flash_message($lang->community_reviews_admin_field_order_updated, 'success');
                     }
+                    
                     // list
                     $page->output_header($lang->community_reviews_admin);
                     $page->output_nav_tabs($sub_tabs, 'fields');
@@ -290,7 +291,6 @@ trait CommunityReviewsHooksACP
                             'order_columns' => ['order', 'category_name', 'name', 'id'],
                             'order_extend'  => '`order` ASC',
                             'items_num'     => $itemsNum,
-                            'per_page'      => 20,
                         ]);
 
                         $items = self::getDistinctFieldsWithCategories($listManager->sql());

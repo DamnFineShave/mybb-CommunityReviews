@@ -55,8 +55,13 @@ class ListManager
             $this->orderExtend = $data['order_extend'];
         }
 
-        $this->itemsNum = (int)$data['items_num'];
-        $this->perPage = (int)$data['per_page'];
+        if (isset($data['items_num'])) {
+            $this->itemsNum = (int)$data['items_num'];
+        }
+
+        if (isset($data['per_page'])) {
+            $this->perPage = (int)$data['per_page'];
+        }
 
         $this->inAcp = defined('IN_ADMINCP');
 
@@ -129,13 +134,15 @@ class ListManager
 
     public function limitSql($limitSyntax = true)
     {
-        if ($limitSyntax) {
-            return "LIMIT " . $this->limitStart . ", " . $this->limit;
-        } else {
-            return [
-                'limit_start' => $this->limitStart,
-                'limit' => $this->limit,
-            ];
+        if ($this->limit) {
+            if ($limitSyntax) {
+                return "LIMIT " . $this->limitStart . ", " . $this->limit;
+            } else {
+                return [
+                    'limit_start' => $this->limitStart,
+                    'limit' => $this->limit,
+                ];
+            }
         }
     }
 
@@ -178,30 +185,32 @@ class ListManager
         }
 
         // pagination
-        if ($this->itemsNum < 0) {
-            $this->itemsNum = 0;
-        }
-
-        if ($this->perPage < 1) {
-            $this->pagesNum = 0;
-        } else {
-            $this->pagesNum = ceil( $this->itemsNum / $this->perPage );
-        }
-
-        if (!$this->page) {
-            if (
-                isset($this->mybb->input['page']) &&
-                (int)$this->mybb->input['page'] > 0 &&
-                (int)$this->mybb->input['page'] <= $this->pagesNum
-            ) {
-                $this->page = (int)$this->mybb->input['page'];
-            } else {
-                $this->page = 1;
+        if ($this->perPage) {
+            if ($this->itemsNum < 0) {
+                $this->itemsNum = 0;
             }
-        }
 
-        $this->limitStart = ($this->page - 1) * $this->perPage;
-        $this->limit = $this->perPage;
+            if ($this->perPage < 1) {
+                $this->pagesNum = 0;
+            } else {
+                $this->pagesNum = ceil( $this->itemsNum / $this->perPage );
+            }
+
+            if (!$this->page) {
+                if (
+                    isset($this->mybb->input['page']) &&
+                    (int)$this->mybb->input['page'] > 0 &&
+                    (int)$this->mybb->input['page'] <= $this->pagesNum
+                ) {
+                    $this->page = (int)$this->mybb->input['page'];
+                } else {
+                    $this->page = 1;
+                }
+            }
+
+            $this->limitStart = ($this->page - 1) * $this->perPage;
+            $this->limit = $this->perPage;
+        }
     }
 
     public function urlWithSortParameters($column = false, $linkOrder = false, $appendParameters = true)
