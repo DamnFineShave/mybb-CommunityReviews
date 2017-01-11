@@ -35,6 +35,7 @@ $l['community_reviews_activity'] = 'Browsing <a href="%s">Reviews</a>';
 // reviews section
 $l['community_reviews_num_products'] = '{1} products';
 $l['community_reviews_num_reviews'] = '{1} reviews';
+$l['community_reviews_num_comments'] = '{1} comments';
 $l['community_reviews_num_views'] = '{1} views';
 
 // sorting & content settings

@@ -242,12 +242,13 @@ trait CommunityReviewsData
         global $db;
         return $db->query("
             SELECT
-                p.*, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(r.id) AS num_reviews
+                p.*, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(DISTINCT r.id) AS num_reviews, COUNT(DISTINCT pc.id) AS num_comments
             FROM
                 " . TABLE_PREFIX . "community_reviews_products p
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=p.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews r ON r.product_id=p.id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews_comments pc ON pc.product_id=p.id
             GROUP BY p.id
             $statements
         ");
@@ -265,12 +266,13 @@ trait CommunityReviewsData
 
         $query = $db->query("
             SELECT
-                p.*, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(r.id) AS num_reviews
+                p.*, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(DISTINCT r.id) AS num_reviews, COUNT(DISTINCT pc.id) AS num_comments
             FROM
                 " . TABLE_PREFIX . "community_reviews_products p
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=p.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews r ON r.product_id=p.id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews_comments pc ON pc.product_id=p.id
             $whereStatement
             GROUP BY p.id
             $statements
@@ -299,12 +301,13 @@ trait CommunityReviewsData
 
         $query = $db->query("
             SELECT
-                p.*, COUNT(r.id) AS num_reviews, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(r.id) AS num_reviews
+                p.*, COUNT(r.id) AS num_reviews, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(DISTINCT r.id) AS num_reviews, COUNT(DISTINCT pc.id) AS num_comments
             FROM
                 " . TABLE_PREFIX . "community_reviews_products p
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=p.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews r ON r.product_id=p.id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews_comments pc ON pc.product_id=p.id
             WHERE category_id=" . (int)$categoryId . "
             GROUP BY p.id
             $statements
@@ -750,13 +753,14 @@ trait CommunityReviewsData
         global $db;
         return $db->query("
             SELECT
-                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews
+                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, COUNT(pc.id) AS num_comments
             FROM
                 " . TABLE_PREFIX . "community_reviews r
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_products p ON p.id=r.product_id
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=r.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews pr ON pr.product_id=r.product_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews_comments pc ON pc.product_id=r.product_id
             GROUP BY r.id, pr.product_id
             $statements
         ");
@@ -783,13 +787,14 @@ trait CommunityReviewsData
         global $db;
         return $db->query("
             SELECT
-                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
+                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, COUNT(DISTINCT pc.id) AS num_comments, MIN(ph.thumbnail_url) AS thumbnail_url
             FROM
                 " . TABLE_PREFIX . "community_reviews r
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_products p ON p.id=r.product_id
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=r.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews pr ON pr.product_id=r.product_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews_comments pc ON pc.product_id=r.product_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
             GROUP BY r.id, pr.product_id
             $statements
@@ -801,13 +806,14 @@ trait CommunityReviewsData
         global $db;
         return $db->query("
             SELECT
-                r.*, p.category_id, p.name, p.views, p.cached_rating, AVG(rf.rating) AS review_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(DISTINCT pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
+                r.*, p.category_id, p.name, p.views, p.cached_rating, AVG(rf.rating) AS review_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(DISTINCT pr.id) AS num_reviews, COUNT(DISTINCT pc.id) AS num_comments, MIN(ph.thumbnail_url) AS thumbnail_url
             FROM
                 " . TABLE_PREFIX . "community_reviews r
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_products p ON p.id=r.product_id
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=r.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews pr ON pr.product_id=r.product_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews_comments pc ON pc.product_id=r.product_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_review_fields rf ON rf.review_id=r.id
             WHERE r.user_id=" . (int)$userId . "
@@ -821,7 +827,7 @@ trait CommunityReviewsData
         global $db;
         return $db->query("
             SELECT
-                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(DISTINCT pr.id) AS num_reviews, MIN(ph.thumbnail_url) AS thumbnail_url
+                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(DISTINCT pr.id) AS num_reviews, COUNT(DISTINCT pc.id) AS num_comments, MIN(ph.thumbnail_url) AS thumbnail_url
             FROM
                 " .  TABLE_PREFIX . "community_reviews_merchants rm
                 INNER JOIN " . TABLE_PREFIX . "community_reviews r ON r.id=rm.review_id
@@ -829,9 +835,10 @@ trait CommunityReviewsData
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_categories c ON c.id=p.category_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=r.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews pr ON pr.product_id=r.product_id
+                LEFT JOIN " . TABLE_PREFIX . "community_reviews_comments pc ON pc.product_id=r.product_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
             WHERE rm.user_id=" . (int)$userId . "
-            GROUP BY r.id, r.id
+            GROUP BY r.id
             $statements
         ");
     }

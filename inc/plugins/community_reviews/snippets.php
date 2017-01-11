@@ -114,16 +114,25 @@ trait CommunityReviewsSnippets
 
         $labels = '';
 
-        if (isset($product['num_reviews'])) {
+        if (isset($product['num_reviews']) && $product['num_reviews'] > 0) {
             $label = $lang->sprintf($lang->community_reviews_num_reviews, $product['num_reviews']);
             eval('$labels .= "' . self::tpl('product_card_label') . '";');
         } else {
             $label = '';
         }
 
-        if (!$isReview) {
-            $label = $lang->sprintf($lang->community_reviews_num_views, $product['views']);
+        if (isset($product['num_comments']) && $product['num_comments'] > 0) {
+            $label = $lang->sprintf($lang->community_reviews_num_comments, $product['num_comments']);
             eval('$labels .= "' . self::tpl('product_card_label') . '";');
+        } else {
+            $label = '';
+        }
+
+        if (!$isReview) {
+            if (isset($product['views']) && $product['views'] > 0) {
+                $label = $lang->sprintf($lang->community_reviews_num_views, $product['views']);
+                eval('$labels .= "' . self::tpl('product_card_label') . '";');
+            }
         }
 
         $description = '';
