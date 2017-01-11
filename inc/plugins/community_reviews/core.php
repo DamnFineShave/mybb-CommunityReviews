@@ -189,6 +189,7 @@ trait CommunityReviewsCore
 
         $slug = $string;
 
+        $slug = html_entity_decode($slug);
         $slug = iconv('UTF-8', 'ASCII//TRANSLIT', $slug);
         $slug = preg_replace('/[^a-zA-Z0-9\/_|+ -]/', '', $slug);
         $slug = strtolower(trim($slug, '-'));
