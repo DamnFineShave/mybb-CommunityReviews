@@ -28,6 +28,7 @@
 
 .community-reviews__category-listing__category { margin: 8px; }
 .community-reviews__category-listing__category__title { display: inline-block; font-size: 14px; font-weight: bold; }
+.community-reviews__category-listing__category--active .community-reviews__category-listing__category__title a { color: #333; }
 .community-reviews__category-listing__category__label { display: inline-block; padding: 4px; color: #666; border: solid 1px rgba(0,0,0,0.1); border-radius: 3px; font-size: 11px; }
 .community-reviews__category-listing__category__label[data-amount="0"] { display: none; }
 

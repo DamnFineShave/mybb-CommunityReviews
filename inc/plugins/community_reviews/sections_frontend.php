@@ -16,8 +16,7 @@ trait CommunityReviewsSectionsFrontend
 
         eval('$searchForm = "' . self::tpl('search_form') . '";');
 
-        $categoryListing = self::buildCategoryListing();
-        eval('$sectionSideContent .= "' . self::tpl('category_listing') . '";');
+        $sectionSideContent = '';
 
         // section dispatch
         if ($mybb->get_input('category')) {
@@ -35,6 +34,9 @@ trait CommunityReviewsSectionsFrontend
                 'sectionSideContent',
             ])));
         }
+
+        $categoryListing = self::buildCategoryListing($category ?? null);
+        eval('$sectionSideContent .= "' . self::tpl('category_listing') . '";');
 
         if (isset($mainTemplate)) {
             eval('$page = "' . self::tpl($mainTemplate) . '";');
@@ -269,6 +271,7 @@ trait CommunityReviewsSectionsFrontend
             'title' => $title,
             'content' => $content,
             'sectionSideContent' => $sectionSideContent,
+            'category' => $category,
         ];
     }
 
@@ -545,6 +548,7 @@ trait CommunityReviewsSectionsFrontend
         return [
             'title' => $title,
             'content' => $content,
+            'category' => $category,
         ];
     }
 

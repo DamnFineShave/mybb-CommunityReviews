@@ -2,7 +2,7 @@
 
 trait CommunityReviewsSnippets
 {
-    public static function buildCategoryListing()
+    public static function buildCategoryListing($category = null)
     {
         global $mybb, $db, $lang;
 
@@ -22,6 +22,12 @@ trait CommunityReviewsSnippets
             $numReviews = isset($reviewsInCategories[$data['id']]) ? $reviewsInCategories[$data['id']] : 0;
             $labelText = $lang->sprintf($lang->community_reviews_num_products, $numReviews);
             $categoryUrl = self::url('category', $id, self::toSlug($data['name']));
+            $classes = '';
+
+            if (!empty($category) && $category['id'] == $id) {
+                $classes .= 'community-reviews__category-listing__category--active';
+            }
+
             eval('$categoryListing .= "' . self::tpl('category_listing_category') . '";');
         }
 
