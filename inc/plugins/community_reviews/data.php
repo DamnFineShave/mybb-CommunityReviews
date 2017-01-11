@@ -31,6 +31,7 @@ trait CommunityReviewsData
         global $db;
         return $db->insert_query('community_reviews_categories', [
             'name' => $db->escape_string($data['name']),
+            'order' => (int)$data['order'],
         ]);
     }
 

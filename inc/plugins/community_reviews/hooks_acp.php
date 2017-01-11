@@ -109,9 +109,18 @@ trait CommunityReviewsHooksACP
                         // action: add
                         self::addCategory([
                             'name' => $mybb->get_input('name'),
+                            'order' => 1,
                         ]);
                         flash_message($lang->community_reviews_admin_category_added, 'success');
                         admin_redirect('index.php?module=config-reviews&action=categories');
+                    } elseif ($mybb->request_method == 'post' && $mybb->get_input('category_order', MyBB::INPUT_ARRAY)) {
+                        // action: update order
+                        foreach ($mybb->get_input('category_order', MyBB::INPUT_ARRAY) as $categoryId => $categoryOrder) {
+                            self::updateCategory((int)$categoryId, [
+                                'order' => (int)$categoryOrder,
+                            ]);
+                        }
+                        flash_message($lang->community_reviews_admin_field_order_updated, 'success');
                     }
 
                     // list
@@ -124,37 +133,46 @@ trait CommunityReviewsHooksACP
                         $listManager = new CommunityReviews\ListManager([
                             'mybb'          => $mybb,
                             'baseurl'       => 'index.php?module=' . $mybb->get_input('module') . '&action=' . $mybb->get_input('action'),
-                            'order_columns' => ['name', 'id'],
+                            'order_columns' => ['order', 'name', 'id'],
                             'items_num'     => $itemsNum,
                             'per_page'      => 20,
                         ]);
 
                         $items = self::getCategories(null, $listManager->queryOptions());
 
-                        $table = new Table;
-                        $table->construct_header($listManager->link('id', $lang->community_reviews_admin_id), ['width' => '5%', 'class' =>  'align_center']);
-                        $table->construct_header($listManager->link('name', $lang->community_reviews_admin_name), ['width' => '90%', 'class' => 'align_center']);
-                        $table->construct_header($lang->community_reviews_admin_controls, ['width' => '5%', 'class' => 'align_center']);
+                        $form = new Form('index.php?module=config-reviews', 'post');
+                        $formContainer = new FormContainer(sprintf($lang->community_reviews_admin_category_list, $itemsNum));
 
+                        $formContainer->output_row_header($listManager->link('id', $lang->community_reviews_admin_id), ['width' => '5%', 'class' =>  'align_center']);
+                        $formContainer->output_row_header($listManager->link('name', $lang->community_reviews_admin_name), ['width' => '75%', 'class' => 'align_center']);
+                        $formContainer->output_row_header($listManager->link('order', $lang->community_reviews_admin_order), ['width' => '15%', 'class' => 'align_center']);
+                        $formContainer->output_row_header($lang->community_reviews_admin_controls, ['width' => '5%', 'class' => 'align_center']);
 
                         while ($item = $db->fetch_array($items)) {
-                            $table->construct_cell($item['id'], ['class' => 'align_center']);
-                            $table->construct_cell(htmlspecialchars_uni($item['name']));
+                            $formContainer->output_cell($item['id'], ['class' => 'align_center']);
+                            $formContainer->output_cell(htmlspecialchars_uni($item['name']));
+                            $formContainer->output_cell('<input type="text" name="category_order[' . $item['id'] . ']" value="' . $item['order'] . '" class="text_input align_center" style="width: 80%; font-weight: bold;" onfocus="this.select()" />', ['class' => 'align_center']);
 
                             $popup = new PopupMenu('controls_' . $item['id'], $lang->community_reviews_admin_controls);
                             $popup->add_item($lang->community_reviews_admin_edit, 'index.php?module=config-reviews&amp;action=categories&amp;id=' . $item['id']);
                             $popup->add_item($lang->community_reviews_admin_delete, 'index.php?module=config-reviews&amp;action=categories&amp;delete=' . $item['id'] . '&my_post_key=' . $mybb->post_code);
-                            $table->construct_cell(
+                            $formContainer->output_cell(
                                 $popup->fetch(),
                                 ['class' => 'align_center']
                             );
 
-                            $table->construct_row();
+                            $formContainer->construct_row();
                         }
 
-                        $table->output(sprintf($lang->community_reviews_admin_category_list, $itemsNum));
+                        $formContainer->end();
+                        $form->output_submit_wrapper([
+                            $form->generate_submit_button($lang->community_reviews_admin_update_order)
+                        ]);
+                        $form->end();
 
                         echo $listManager->pagination();
+
+                        echo '<br />';
                     }
 
                     // add form
@@ -269,6 +287,7 @@ trait CommunityReviewsHooksACP
                         flash_message($lang->community_reviews_admin_field_added, 'success');
                         admin_redirect('index.php?module=config-reviews&action=fields');
                     } elseif ($mybb->request_method == 'post' && $mybb->get_input('field_order', MyBB::INPUT_ARRAY)) {
+                        // action: update order
                         foreach ($mybb->get_input('field_order', MyBB::INPUT_ARRAY) as $fieldId => $fieldOrder) {
                             $siblingFields = self::getSiblingFields($fieldId);
                             self::updateFields($siblingFields, [

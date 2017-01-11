@@ -87,6 +87,7 @@ function community_reviews_install()
         CREATE TABLE IF NOT EXISTS `" . TABLE_PREFIX . "community_reviews_categories` (
             `id` int(11) NOT NULL auto_increment,
             `name` varchar(255) NOT NULL,
+            `order` int(11) NOT NULL,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB " . $db->build_create_table_collation() . "
     ");

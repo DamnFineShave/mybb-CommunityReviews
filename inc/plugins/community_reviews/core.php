@@ -64,7 +64,9 @@ trait CommunityReviewsCore
 
         $array = [];
 
-        $categories = self::getCategories();
+        $categories = self::getCategories(false, [
+            'order_by' => '`order`',
+        ]);
 
         while ($row = $db->fetch_array($categories)) {
             $array[ $row['id'] ] = [
