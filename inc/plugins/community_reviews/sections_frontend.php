@@ -239,7 +239,7 @@ trait CommunityReviewsSectionsFrontend
                 $listManager = new CommunityReviews\ListManager([
                     'mybb'          => $mybb,
                     'baseurl'       => self::url('category', $category['id'], self::toSlug($category['name'])),
-                    'order_columns' => ['name', 'rating' => 'cached_rating', 'num_reviews', 'views'],
+                    'order_columns' => ['name', 'rating' => 'cached_rating', 'num_reviews', 'views', 'date'],
                     'items_num'     => $itemsNum,
                     'per_page'      => self::settings('per_page'),
                 ]);
@@ -252,6 +252,7 @@ trait CommunityReviewsSectionsFrontend
                 $sortingOptions .= $listManager->link('rating', $lang->community_reviews_sorting_rating, $mybb->seo_support);
                 $sortingOptions .= $listManager->link('num_reviews', $lang->community_reviews_sorting_reviews, $mybb->seo_support);
                 $sortingOptions .= $listManager->link('views', $lang->community_reviews_sorting_views, $mybb->seo_support);
+                $sortingOptions .= $listManager->link('date', $lang->community_reviews_sorting_date, $mybb->seo_support);
 
                 eval('$sectionSideContent .= "' . self::tpl('sorting_options') . '";');
 

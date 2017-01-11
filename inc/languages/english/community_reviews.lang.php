@@ -42,6 +42,7 @@ $l['community_reviews_sorting_name'] = 'Name';
 $l['community_reviews_sorting_rating'] = 'Rating';
 $l['community_reviews_sorting_reviews'] = 'Reviews';
 $l['community_reviews_sorting_views'] = 'Views';
+$l['community_reviews_sorting_date'] = 'Date added';
 $l['community_reviews_reviews_only'] = 'Show reviews only';
 
 // sections
