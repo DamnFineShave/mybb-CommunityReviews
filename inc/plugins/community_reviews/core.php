@@ -124,7 +124,7 @@ trait CommunityReviewsCore
         global $mybb;
 
         if (!self::$urlPatterns) {
-            if ($mybb->seo_support && self::$forceUrlFormat != 'raw') {
+            if (self::settings('seo_urls') && self::$forceUrlFormat != 'raw') {
                 self::$urlPatterns = [
                     'index' => '/reviews',
                     'search' => '/reviews-search',

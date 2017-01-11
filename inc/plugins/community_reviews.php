@@ -258,6 +258,12 @@ desc=Newest to oldest',
                 'optionscode' => 'numeric',
                 'value'       => '30',
             ],
+            'seo_urls' => [
+                'title'       => 'Search engine friendly URLs',
+                'description' => 'Use friendly URLs when linking to Community Reviews pages. Requires plugin\'s rewrite rules present in the server configuration.',
+                'optionscode' => 'yesno',
+                'value'       => '0',
+            ],
             'groups_edit_own' => [
                 'title'       => 'Group permissions: Deleting own content',
                 'description' => 'User groups that can delete own reviews.',
