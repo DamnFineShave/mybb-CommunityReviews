@@ -1245,10 +1245,10 @@ trait CommunityReviewsData
             'n'
         );
 
-        if ((int)self::settings('per_page') < 1) {
+        if ((int)self::settings('reviews_per_page') < 1) {
             $pageNumber = 1;
         } else {
-            $pageNumber = ceil(($previousEntries + 1) / (int)self::settings('per_page'));
+            $pageNumber = ceil(($previousEntries + 1) / (int)self::settings('reviews_per_page'));
         }
 
         return [

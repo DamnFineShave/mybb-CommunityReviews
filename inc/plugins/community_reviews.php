@@ -233,8 +233,14 @@ asc=Oldest to newest
 desc=Newest to oldest',
                 'value'       => 'desc',
             ],
-            'per_page' => [
-                'title'       => 'Items per page',
+            'reviews_per_page' => [
+                'title'       => 'Reviews per page',
+                'description' => 'Items to be shown on single page.',
+                'optionscode' => 'numeric',
+                'value'       => '12',
+            ],
+            'products_per_page' => [
+                'title'       => 'Products per page',
                 'description' => 'Items to be shown on single page.',
                 'optionscode' => 'numeric',
                 'value'       => '12',

@@ -241,7 +241,7 @@ trait CommunityReviewsSectionsFrontend
                     'baseurl'       => self::url('category', $category['id'], self::toSlug($category['name'])),
                     'order_columns' => ['name', 'rating' => 'cached_rating', 'num_reviews', 'views', 'date'],
                     'items_num'     => $itemsNum,
-                    'per_page'      => self::settings('per_page'),
+                    'per_page'      => self::settings('products_per_page'),
                 ]);
 
                 // pagination
@@ -515,7 +515,7 @@ trait CommunityReviewsSectionsFrontend
                     'order_dir'     => self::displayOrder(),
                     'order_extend'  => '`id` ' . self::displayOrder(),
                     'items_num'     => $itemsNum,
-                    'per_page'      => self::settings('per_page'),
+                    'per_page'      => self::settings('reviews_per_page'),
                 ], true);
 
                 if ($mybb->get_input('review', MyBB::INPUT_INT)) {
@@ -591,7 +591,7 @@ trait CommunityReviewsSectionsFrontend
                 'mybb'          => $mybb,
                 'baseurl'       => self::url('search_keywords', urlencode($mybb->get_input('keywords'))),
                 'items_num'     => $itemsNum,
-                'per_page'      => self::settings('per_page'),
+                'per_page'      => self::settings('products_per_page'),
             ]);
 
             // pagination
@@ -642,7 +642,7 @@ trait CommunityReviewsSectionsFrontend
                     'order_columns' => ['date'],
                     'order_dir'     => 'DESC',
                     'items_num'     => $itemsNum,
-                    'per_page'      => self::settings('per_page'),
+                    'per_page'      => self::settings('products_per_page'),
                 ]);
 
                 // pagination
