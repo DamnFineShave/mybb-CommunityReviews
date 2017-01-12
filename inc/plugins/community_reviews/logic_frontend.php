@@ -60,6 +60,8 @@ trait CommunityReviewsLogicFrontend
                         'rating' => (int)$field['rating'],
                     ]);
                 }
+
+                self::sendSameProductReviewAlert($product, $reviewId, self::getProductAuthors($product['id']));
             }
 
             self::updateProductRating($product['id']);
@@ -261,6 +263,8 @@ trait CommunityReviewsLogicFrontend
                     'ipaddress' => get_ip(),
                     'comment' => $comment['comment'],
                 ]);
+
+                self::sendSameProductCommentAlert($product, $commentId, self::getProductAuthors($product['id']));
 
                 redirect(self::url('comment', $product['id'], self::toSlug($product['name']), (int)$commentId), $lang->community_reviews_comment_added);
             }

@@ -99,8 +99,15 @@ trait CommunityReviewsHooksFrontend
         if (CommunityReviewsMyalertsIntegrable()) {
             if ($mybb->user['uid']) {
                 $formatterManager = MybbStuff_MyAlerts_AlertFormatterManager::getInstance();
+
                 $class = 'MybbStuff_MyAlerts_Formatter_CommunityReviewsMerchantTagFormatter';
                 $formatterManager->registerFormatter(new $class($mybb, $lang, 'community_reviews_merchant_tag'));
+
+                $class = 'MybbStuff_MyAlerts_Formatter_CommunityReviewsSameProductReviewFormatter';
+                $formatterManager->registerFormatter(new $class($mybb, $lang, 'community_reviews_same_product_review'));
+
+                $class = 'MybbStuff_MyAlerts_Formatter_CommunityReviewsSameProductCommentFormatter';
+                $formatterManager->registerFormatter(new $class($mybb, $lang, 'community_reviews_same_product_comment'));
             }
         }
 

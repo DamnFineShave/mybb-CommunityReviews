@@ -331,6 +331,29 @@ trait CommunityReviewsData
         return $products;
     }
 
+    public static function getProductAuthors($productId)
+    {
+        global $db;
+
+        $userIds = [];
+
+        $query = $db->simple_select('community_reviews', 'DISTINCT user_id', 'product_id=' . $productId);
+
+        while ($row = $db->fetch_array($query)) {
+            $userIds[] = $row['user_id'];
+        }
+        
+        $query = $db->simple_select('community_reviews_comments', 'DISTINCT user_id', 'product_id=' . $productId);
+        
+        while ($row = $db->fetch_array($query)) {
+            $userIds[] = $row['user_id'];
+        }
+
+        $userIds = array_unique($userIds);
+
+        return $userIds;
+    }
+
     public static function countProducts($where = false)
     {
         global $db;
@@ -1073,14 +1096,19 @@ trait CommunityReviewsData
 
         $time = time();
 
-        $id = $db->insert_query('community_reviews_comments', [
+        $data = [
             'product_id' => (int)$data['product_id'],
-            'review_id' => (int)$data['review_id'] ?? null,
             'user_id' => (int)$data['user_id'],
             'date' => $time,
             'ipaddress' => $db->escape_binary(my_inet_pton($data['ipaddress'])),
             'comment' => $db->escape_string($data['comment']),
-        ]);
+        ];
+
+        if ($data['review_id']) {
+            $data['review_id'] = (int)$data['review_id'];
+        }
+
+        $id = $db->insert_query('community_reviews_comments', $data);
 
         self::addProductFeedEntry([
             'time' => $time,
