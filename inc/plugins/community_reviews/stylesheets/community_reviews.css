@@ -49,9 +49,9 @@
 .community-reviews__title .community-reviews__stars__star:before { font-size: 24px; }
 
 .community-reviews__controls { flex: 1; text-align: right; }
-.community-reviews__controls__moderation { display: inline-block; }
-.community-reviews__controls__moderation a:link, .community-reviews__controls__moderation a:visited { margin: 0 4px; font-size: 16px; color: #CCC; }
-.community-reviews__controls__moderation a:focus, .community-reviews__controls__moderation a:hover { color: #888; }
+.community-reviews__controls__moderation, .community-reviews__controls__content { display: inline-block; }
+.community-reviews__controls__moderation a:link, .community-reviews__controls__moderation a:visited, .community-reviews__controls__content a:link, .community-reviews__controls__content a:visited { margin: 0 4px; font-size: 16px; color: #CCC; }
+.community-reviews__controls__moderation a:focus, .community-reviews__controls__moderation a:hover, .community-reviews__controls__content a:focus, .community-reviews__controls__content a:hover { color: #888; }
 .community-reviews__controls__id { display: inline-block; }
 
 .community-reviews__pagination { padding: 10px 0; text-align: center; }
@@ -107,12 +107,13 @@
 
 .community-reviews__review { margin: 16px 0; }
 .community-reviews__review__header { display: flex; padding: 8px 10px; background: rgba(0,0,0,0.05); }
-.community-reviews__review__header__meta { flex: 1; color: #AAA; padding: 4px 0 0; }
+.community-reviews__review__header__meta { flex: 1; color: #AAA; padding: 4px 0 0; line-height: 15px; }
 .community-reviews__review__header__meta__rating { display: inline-block; margin: -6px 0 0; }
 .community-reviews__review__header__meta__rating .community-reviews__stars { display: inline-block; position: relative; top: 2px; }
 .community-reviews__review__header__meta__rating .community-reviews__stars__star:before { font-size: 20px; }
 .community-reviews__review__header__meta__username { display: inline-block; }
 .community-reviews__review__header__meta__date { display: inline-block; color: #AAA; }
+.community-reviews__review__header__meta__reply { display: inline-block; color: #AAA; }
 .community-reviews__review__header .community-reviews__controls { padding: 2px; }
 .community-reviews__review__body { padding: 2px; border: solid 1px rgba(0,0,0,0.05); box-shadow: 0 3px 6px rgba(0,0,0,0.05); }
 .community-reviews__review__properties:not(:empty) { padding: 10px 8px; }
@@ -136,6 +137,7 @@
 .community-reviews__widget__controls__previous:before { content: "\f053"; }
 .community-reviews__widget__controls__next:before { content: "\f054"; }
 .community-reviews__controls__link:before { content: "\f0c1"; }
+.community-reviews__controls__reply:before { content: "\f112"; }
 .community-reviews__controls__report:before { content: "\f024"; }
 .community-reviews__controls__edit:before { content: "\f040"; }
 .community-reviews__controls__delete:before { content: "\f1f8"; }

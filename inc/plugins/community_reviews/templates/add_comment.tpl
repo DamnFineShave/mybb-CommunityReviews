@@ -1,6 +1,7 @@
 <section>
     <p class="community-reviews__section-title">{$sectionTitle}</p>
     {$errors}
+    {$messages}
     <form method="post" action="{$formActionUrl}">
         <div class="community-reviews__form__field">
             <p class="community-reviews__form__field__title">{$lang->community_reviews_comment}</p>

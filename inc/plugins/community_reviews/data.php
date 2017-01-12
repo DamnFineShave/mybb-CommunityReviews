@@ -1075,6 +1075,7 @@ trait CommunityReviewsData
 
         $id = $db->insert_query('community_reviews_comments', [
             'product_id' => (int)$data['product_id'],
+            'review_id' => (int)$data['review_id'] ?? null,
             'user_id' => (int)$data['user_id'],
             'date' => $time,
             'ipaddress' => $db->escape_binary(my_inet_pton($data['ipaddress'])),

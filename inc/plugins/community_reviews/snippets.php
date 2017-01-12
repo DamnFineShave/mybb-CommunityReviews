@@ -209,6 +209,8 @@ trait CommunityReviewsSnippets
             $deleteLink = '<a href="' . self::url('delete_review', $product['id'], self::toSlug($product['name']), (int)$review['id']) . '" title="' . $lang->community_reviews_delete . '" class="community-reviews__controls__delete"></a>';
         }
 
+        $replyLink = '<a href="' . self::url('add_comment_reply', $product['id'], self::toSlug($product['name']), (int)$review['id']) . '" title="' . $lang->community_reviews_add_comment_reply . '" class="community-reviews__controls__reply"></a>';
+
         // properties
         $reviewProperties = '';
 
@@ -339,6 +341,11 @@ trait CommunityReviewsSnippets
         $profileLink = build_profile_link(format_name(htmlspecialchars_uni($comment['username']), $comment['usergroup'], $comment['displaygroup']), $comment['user_id']);
         $date = my_date('relative', $comment['date']);
         $commentUrl = self::url('comment', $product['id'], self::toSlug($product['name']), $comment['id']);
+
+        if ($comment['review_id']) {
+            $reviewUrl = self::url('review', $product['id'], self::toSlug($product['name']), $comment['review_id']);
+            $replyTo .= $lang->sprintf($lang->community_reviews_in_reply_to, $reviewUrl, $comment['review_id']);
+        }
 
         if (self::isUser()) {
             $reportLink = '<a href="javascript:communityReviews.reportComment(' . $comment['id'] . ')" title="' . $lang->community_reviews_report . '" class="community-reviews__controls__report"></a>';

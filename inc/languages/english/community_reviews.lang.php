@@ -26,6 +26,7 @@ $l['community_reviews_added_by'] = 'Added by <span>{1}</span>';
 $l['community_reviews_added_on'] = 'on <span>{1}</span>';
 $l['community_reviews_added_in'] = 'in <span>{1}</span>';
 $l['community_reviews_rating_from'] = 'from';
+$l['community_reviews_in_reply_to'] = 'in reply to <a href="{1}">#{2}</a>';
 $l['community_reviews_no_ratings'] = 'No ratings yet';
 
 // Who's Online
@@ -94,6 +95,7 @@ $l['community_reviews_update_product'] = 'Update Product';
 $l['community_reviews_add_review'] = 'Add Review';
 $l['community_reviews_update_review'] = 'Update Review';
 $l['community_reviews_add_comment'] = 'Add Comment';
+$l['community_reviews_add_comment_reply'] = 'Reply';
 $l['community_reviews_update_comment'] = 'Update Comment';
 $l['community_reviews_report'] = 'Report';
 $l['community_reviews_edit'] = 'Edit';

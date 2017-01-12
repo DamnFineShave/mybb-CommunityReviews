@@ -184,6 +184,7 @@ function community_reviews_install()
         CREATE TABLE IF NOT EXISTS `" . TABLE_PREFIX . "community_reviews_comments` (
             `id` int(11) NOT NULL auto_increment,
             `product_id` int(11) NOT NULL,
+            `review_id` int(11),
             `user_id` int(11) NOT NULL,
             `date` int(11) NOT NULL,
             `ipaddress` varbinary(16) NOT NULL,
@@ -191,6 +192,9 @@ function community_reviews_install()
             PRIMARY KEY (`id`),
             FOREIGN KEY (`product_id`)
                 REFERENCES " . TABLE_PREFIX . "community_reviews_products(`id`)
+                ON DELETE CASCADE,
+            FOREIGN KEY (`review_id`)
+                REFERENCES " . TABLE_PREFIX . "community_reviews(`id`)
                 ON DELETE CASCADE
         ) ENGINE=InnoDB " . $db->build_create_table_collation() . "
     ");

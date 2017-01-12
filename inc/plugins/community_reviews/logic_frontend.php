@@ -256,6 +256,7 @@ trait CommunityReviewsLogicFrontend
             } else {
                 $commentId = self::addComment([
                     'product_id' => (int)$product['id'],
+                    'review_id' => (int)$comment['review_id'],
                     'user_id' => (int)$mybb->user['uid'],
                     'ipaddress' => get_ip(),
                     'comment' => $comment['comment'],
@@ -266,7 +267,7 @@ trait CommunityReviewsLogicFrontend
         }
     }
 
-    public static function validateProductComment(&$comment, &$errors)
+    public static function validateProductComment($product, $review, &$comment, &$errors)
     {
         global $mybb, $lang;
 
@@ -274,6 +275,12 @@ trait CommunityReviewsLogicFrontend
             $comment['comment'] = '';
         } else {
             $comment['comment'] = $mybb->get_input('comment');
+        }
+
+        if (!isset($review) || $review['product_id'] != $product['id']) {
+            $comment['review_id'] = '';
+        } else {
+            $comment['review_id'] = (int)$review['id'];
         }
     }
 }

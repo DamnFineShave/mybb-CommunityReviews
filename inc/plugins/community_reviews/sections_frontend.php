@@ -385,6 +385,9 @@ trait CommunityReviewsSectionsFrontend
                     self::redirect(self::url('index'));
                 }
             } elseif ($mybb->get_input('add_comment') || $mybb->get_input('edit_comment')) {
+                $errors = '';
+                $messages = '';
+
                 if ($mybb->get_input('edit_comment', MyBB::INPUT_INT) && $comment = self::getComment($mybb->get_input('edit_comment', MyBB::INPUT_INT))) {
                     if (!self::canEditUserContent($comment['user_id'])) {
                         error_no_permission();
@@ -392,6 +395,15 @@ trait CommunityReviewsSectionsFrontend
                         $title = $lang->community_reviews_update_comment . '  - ' . $lang->community_reviews_location;
                         $sectionTitle = $lang->sprintf($lang->community_reviews_edit_comment_in, htmlspecialchars_uni($product['name']));
                         add_breadcrumb($lang->community_reviews_update_comment, self::url('edit_comment', $product['id'], self::toSlug($product['name']), (int)$comment['id']));
+
+                        if ($comment['review_id']) {
+                            $review = self::getReview($comment['review_id']);
+
+                            if ($review) {
+                                $reviewUrl = self::url('review', $product['id'], self::toSlug($product['name']), $review['id']);
+                                $messages .= $lang->sprintf($lang->community_reviews_in_reply_to, $reviewUrl, $review['id']);
+                            }
+                        }
                     }
                 } else {
                     $comment = false;
@@ -402,14 +414,21 @@ trait CommunityReviewsSectionsFrontend
                         $title = $lang->community_reviews_add_comment . '  - ' . $lang->community_reviews_location;
                         $sectionTitle = $lang->sprintf($lang->community_reviews_add_comment_in, htmlspecialchars_uni($product['name']));
                         add_breadcrumb($lang->community_reviews_add_comment, self::url('add_comment', $product['id'], self::toSlug($product['name'])));
+
+                        if ($mybb->get_input('reply', MyBB::INPUT_INT)) {
+                            $review = self::getReview($mybb->get_input('reply', MyBB::INPUT_INT));
+
+                            if ($review && $review['product_id'] == $product['id']) {
+                                $reviewUrl = self::url('review', $product['id'], self::toSlug($product['name']), $review['id']);
+                                $messages .= $lang->sprintf($lang->community_reviews_in_reply_to, $reviewUrl, $review['id']);
+                            }
+                        }
                     }
                 }
 
-                $errors = '';
-
                 if ($mybb->request_method == 'post') {
                     verify_post_check($mybb->get_input('my_post_key'));
-                    self::validateProductComment($comment, $errors);
+                    self::validateProductComment($product, $review, $comment, $errors);
                     self::processProductComment($product, $comment, $errors, false);
                 }
 
@@ -421,7 +440,10 @@ trait CommunityReviewsSectionsFrontend
 
                 $formActionUrl = $comment['id']
                     ? self::url('edit_comment', $product['id'], self::toSlug($product['name']), (int)$comment['id'])
-                    : self::url('add_comment', $product['id'], self::toSlug($product['name']))
+                    : (isset($review)
+                        ? self::url('add_comment_reply', $product['id'], self::toSlug($product['name']), $review['id'])
+                        : self::url('add_comment', $product['id'], self::toSlug($product['name']))
+                    )
                 ;
 
                 $buttonText = $comment['id']
