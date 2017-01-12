@@ -112,3 +112,9 @@ $l['community_reviews_confirm_delete_comment'] = 'Are you sure you want to delet
 // 3rd party integration
 $l['myalerts_community_reviews_merchant_tag_alert'] = '{1} has tagged you in a review of {2}';
 $l['myalerts_setting_community_reviews_merchant_tag'] = 'Receive alert when tagged in a review?';
+
+$l['myalerts_community_reviews_same_product_review_alert'] = '{1} has reviewed {2}';
+$l['myalerts_setting_community_reviews_same_product_review'] = 'Receive alert when a review is added to product I\'ve posted in?';
+
+$l['myalerts_community_reviews_same_product_comment_alert'] = '{1} has commented on {2}';
+$l['myalerts_setting_community_reviews_same_product_comment'] = 'Receive alert when a comment is added to product I\'ve posted in?';
