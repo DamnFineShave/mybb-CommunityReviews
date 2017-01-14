@@ -536,10 +536,10 @@ trait CommunityReviewsData
 
             if (!$allPhotos) {
                 $columns = 'r.product_id, MIN(ph.thumbnail_url) AS thumbnail_url';
-                $groupBy = 'GROUP BY r.product_id';
+                $groupBy = 'GROUP BY r.product_id, ph.review_id, ph.`order`';
             } else {
                 $columns = 'r.product_id, ph.thumbnail_url';
-                $groupBy = '';
+                $groupBy = 'GROUP BY ph.review_id, ph.`order`';
             }
 
             $query = $db->query("
@@ -550,10 +550,17 @@ trait CommunityReviewsData
                     INNER JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON r.id=ph.review_id
                 WHERE r.product_id IN (" . implode(',', $productIds) . ")
                 $groupBy
+                ORDER BY ph.review_id ASC, ph.`order` ASC
             ");
 
+            $fetchedProductIds = [];
+
             while ($row = $db->fetch_array($query)) {
-                $photos[] = $row;
+                if ($allProducts || !in_array($row['product_id'], $fetchedProductIds)) {
+                    $photos[] = $row;
+                }
+
+                $fetchedProductIds[] = $row['product_id'];
             }
         }
 
@@ -566,7 +573,9 @@ trait CommunityReviewsData
 
         $photos = [];
 
-        $query = $db->simple_select('community_reviews_photos', '*', 'review_id=' . (int)$reviewId);
+        $query = $db->simple_select('community_reviews_photos', '*', 'review_id=' . (int)$reviewId, [
+            'order_by' => '`order`',
+        ]);
 
         while ($row = $db->fetch_array($query)) {
             $photos[ $row['id'] ] = $row;
@@ -587,7 +596,9 @@ trait CommunityReviewsData
 
         $reviewIdsFiltered = array_map('intval', $reviewIds);
 
-        $query = $db->simple_select('community_reviews_photos', '*', 'review_id IN (' . implode(',', $reviewIdsFiltered) . ')');
+        $query = $db->simple_select('community_reviews_photos', '*', 'review_id IN (' . implode(',', $reviewIdsFiltered) . ')', [
+            'order_by' => '`order`',
+        ]);
 
         while ($row = $db->fetch_array($query)) {
             $photos[ $row['review_id'] ][ $row['id'] ] = $row;
@@ -624,6 +635,48 @@ trait CommunityReviewsData
     {
         global $db;
         return $db->update_query('community_reviews_photos', $data, 'id=' . (int)$id);
+    }
+
+    public static function setReviewFirstPhoto($reviewId, $photoId)
+    {
+        global $db;
+
+        $reviewPhotos = self::getReviewPhotos($reviewId);
+
+        if (array_key_exists($photoId, $reviewPhotos)) {
+            $order = 2;
+
+            foreach ($reviewPhotos as $photo) {
+                self::updatePhoto($photo['id'], [
+                    'order' => $photo['id'] == $photoId ? 1 : $order++,
+                ]);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function setReviewFirstPhotoByUrl($reviewId, $photoUrl)
+    {
+        global $db;
+
+        $reviewPhotos = self::getReviewPhotos($reviewId);
+
+        if (array_search($photoUrl, array_column($reviewPhotos, 'url')) !== false) {
+            $order = 2;
+
+            foreach ($reviewPhotos as $photo) {
+                self::updatePhoto($photo['id'], [
+                    'order' => $photo['url'] == $photoUrl ? 1 : $order++,
+                ]);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public static function deletePhoto($id)

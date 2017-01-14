@@ -145,6 +145,7 @@ function community_reviews_install()
             `review_id` int(11) NOT NULL,
             `url` text NOT NULL,
             `thumbnail_url` text NOT NULL,
+            `order` int(11) DEFAULT 0,
             PRIMARY KEY (`id`),
             FOREIGN KEY (`review_id`)
                 REFERENCES " . TABLE_PREFIX . "community_reviews(`id`)

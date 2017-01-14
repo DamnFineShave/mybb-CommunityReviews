@@ -321,10 +321,16 @@ trait CommunityReviewsSnippets
 
         $html = '';
 
+        $n = 0;
+
         foreach ($photos as $photo) {
+            $n++;
+
             $url = htmlspecialchars_uni(self::getResourceUrl($photo['url']));
             $thumbnail_url = htmlspecialchars_uni(self::getResourceUrl($photo['thumbnail_url']));
-            $options = '<label><input type="checkbox" name="delete_photos[]" value="' . $photo['id'] . '" /> ' . $lang->community_reviews_delete . '</label>';
+            $options =
+                '<label><input type="radio" name="first_photo" value="' . $photo['id'] . '" ' . ($n == 1 ? 'checked="checked"' : null) . ' /> ' . $lang->community_reviews_first_photo . '</label>'
+                . '<br /><label><input type="checkbox" name="delete_photos[]" value="' . $photo['id'] . '" /> ' . $lang->community_reviews_delete . '</label>';
             eval('$html .= "' . self::tpl('review_photo') . '";');
         }
 

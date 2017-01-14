@@ -66,7 +66,7 @@ trait CommunityReviewsLogicFrontend
 
             self::updateProductRating($product['id']);
 
-            if ($review['new_photos']) {
+            if (isset($review['new_photos'])) {
                 foreach ($review['new_photos'] as $photo) {
                     self::addPhoto([
                         'review_id' => $reviewId,
@@ -74,6 +74,12 @@ trait CommunityReviewsLogicFrontend
                         'thumbnail_url' => $photo['thumbnail_url'],
                     ]);
                 }
+            }
+
+            if (isset($review['first_photo'])) {
+                self::setReviewFirstPhoto($reviewId, $review['first_photo']);
+            } elseif (isset($review['first_photo_url'])) {
+                self::setReviewFirstPhotoByUrl($reviewId, $review['first_photo_url']);
             }
 
             if (isset($review['removed_merchants'])) {
@@ -138,6 +144,11 @@ trait CommunityReviewsLogicFrontend
         // photos
         $reviewPhotos = self::getReviewPhotos($review['id']);
         $reviewPhotosNum = count($reviewPhotos);
+        $reviewPhotoUrls = [];
+
+        foreach ($reviewPhotos as $photo) {
+            $reviewPhotoUrls[] = $photo['url'];
+        }
 
         if (isset($mybb->input['delete_photos']) && is_array($mybb->input['delete_photos'])) {
             foreach ($mybb->input['delete_photos'] as $photoId) {
@@ -164,6 +175,8 @@ trait CommunityReviewsLogicFrontend
                     $data = $photoUrls;
                     $data['new'] = true;
                     $review['new_photos'][] = $data;
+
+                    $reviewPhotoUrls[] = $photoUrls['photo_url'];
                 }
             }
         }
@@ -176,6 +189,14 @@ trait CommunityReviewsLogicFrontend
 
         if (self::settings('require_review_photos') && $totalPhotos == 0) {
             $errors .= inline_error($lang->community_reviews_photo_required);
+        }
+
+        if (isset($mybb->input['first_photo'])) {
+            if (array_key_exists($mybb->get_input('first_photo', MyBB::INPUT_INT), $reviewPhotos)) {
+                $review['first_photo'] = $mybb->get_input('first_photo', MyBB::INPUT_INT);
+            } elseif (in_array($mybb->get_input('first_photo'), $reviewPhotoUrls)) {
+                $review['first_photo_url'] = $mybb->get_input('first_photo');
+            }
         }
 
         // merchants

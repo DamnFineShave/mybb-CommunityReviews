@@ -9,7 +9,7 @@
 <div class="community-reviews__form__field">
     <p class="community-reviews__form__field__title">{$lang->community_reviews_product_photos}</p>
         <p class="community-reviews__form__field__description">{$lang->community_reviews_product_photos_description}</p>
-    <div>
+    <div id="review_photos_preview">
         {$reviewPhotos}
     </div>
     <br />

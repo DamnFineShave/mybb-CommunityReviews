@@ -105,6 +105,7 @@ $l['community_reviews_confirm_action'] = 'Confirm action';
 $l['community_reviews_back'] = 'Back';
 $l['community_reviews_proceed'] = 'Proceed';
 $l['community_reviews_view_more'] = 'View more &rarr;';
+$l['community_reviews_first_photo'] = 'Review thumbnail';
 $l['community_reviews_confirm_delete_product'] = 'Are you sure you want to delete selected product?';
 $l['community_reviews_confirm_delete_review'] = 'Are you sure you want to delete selected review?';
 $l['community_reviews_confirm_delete_comment'] = 'Are you sure you want to delete selected comment?';

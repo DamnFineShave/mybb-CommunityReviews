@@ -27,7 +27,21 @@ var communityReviews = {
                     var formData = new FormData();
                     formData.append('image', file);
 
+                    var $loader = $('<div class="community-reviews__photo-loader"><div class="community-reviews__photo-loader__bar"><div></div></div></div>');
+                    $loader.appendTo('#review_photos_preview');
+
                     $.ajax({
+                        xhr: function() {
+                            var xhr = new window.XMLHttpRequest();
+                            xhr.upload.addEventListener('progress', function(evt) {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = parseInt((evt.loaded / evt.total) * 100);
+                                    $loader.find('.community-reviews__photo-loader__bar div').animate({ width: percentComplete + '%' });
+                                }
+                            }, false);
+
+                            return xhr;
+                        },
                         url: 'https://api.imgur.com/3/image',
                         headers: {
                             'Authorization': 'Client-ID ' + communityReviews.authClientId,
@@ -37,6 +51,8 @@ var communityReviews = {
                         processData: false,
                         contentType: false,
                         success: function(response) {
+                            $loader.remove();
+
                             input.closest('form').find('button').removeAttr('disabled');
 
                             $('<input />').attr({
@@ -44,6 +60,20 @@ var communityReviews = {
                                 'name': 'review_photos[]',
                                 'value': response.data.link,
                             }).appendTo(input.closest('form'));
+
+                            var photoUrl = response.data.link.replace(/^http:/i, 'https:');
+                            var thumbnailUrl = photoUrl.replace(/(\.[a-z]+)$/i, 'm$1');
+
+                            var $photo = $('<div class="community-reviews__photo"></div>');
+                            var $container = $('<div class="community-reviews__photo__image-container"></div>');
+                            var $image = $('<div class="community-reviews__photo__image" style="background-image:url(' + thumbnailUrl + ')"></div>');
+                            var $options = $('<div class="community-reviews__photo__options"><label><input type="radio" name="first_photo" value="' + photoUrl + '"> ' + lang.community_reviews_first_photo + '</label></div>');
+
+                            $image.appendTo($container);
+                            $container.appendTo($photo);
+                            $options.appendTo($photo);
+
+                            $('#review_photos_preview').append($photo);
                         },
                     });
                 }

@@ -23,7 +23,6 @@
 
 {$footer}
 
-
 <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
     <div class="slides"></div>
     <h3 class="title"></h3>
@@ -52,6 +51,7 @@ communityReviews.maxReviewPhotos = {$mybb->settings['community_reviews_max_revie
 communityReviews.authClientId = "{$mybb->settings['community_reviews_photos_auth_client_id']}";
 
 lang.community_reviews_max_photos_exceeded = "{$lang->community_reviews_product_photos}";
+lang.community_reviews_first_photo = "{$lang->community_reviews_first_photo}";
 </script>
 </body>
 </html>
