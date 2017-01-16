@@ -1101,6 +1101,27 @@ trait CommunityReviewsData
         return self::getComments('id IN (' . implode(',', $ids) . ')', $options);
     }
 
+    public static function getCommentDataInProduct($productId, $where = '', $statements = '')
+    {
+        global $db;
+
+        if ($where) {
+            $where .= ' AND ' . $where;
+        }
+
+        $query = $db->query("
+            SELECT
+                c.*, u.username, u.usergroup, u.displaygroup, u.avatar
+            FROM
+                " .  TABLE_PREFIX . "community_reviews_comments c
+                INNER JOIN " . TABLE_PREFIX . "users u ON c.user_id=u.uid
+            WHERE product_id=" . (int)$productId . " $where
+            $statements
+        ");
+
+        return self::queryResultToArray($query);
+    }
+
     public static function getCommentDataMultiple($commentIds)
     {
         global $db;
@@ -1266,7 +1287,7 @@ trait CommunityReviewsData
         );
     }
 
-    public static function getEntryLocation($type, $id, $displayOrder = 'DESC', $whereClauses = '')
+    public static function getFeedEntryLocation($type, $id, $displayOrder = 'DESC', $whereClauses = '')
     {
         global $db;
 
@@ -1295,6 +1316,50 @@ trait CommunityReviewsData
 
         $previousEntries = $db->fetch_field(
             $db->simple_select('community_reviews_product_feed', 'COUNT(id) AS n', 'product_id = ' . (int)$entry['product_id'] . ' AND id ' . $comparison . ' ' . (int)$feedId . $where),
+            'n'
+        );
+
+        if ((int)self::settings('reviews_per_page') < 1) {
+            $pageNumber = 1;
+        } else {
+            $pageNumber = ceil(($previousEntries + 1) / (int)self::settings('reviews_per_page'));
+        }
+
+        return [
+            'product_id' => $entry['product_id'],
+            'pageNumber' => $pageNumber,
+        ];
+    }
+
+    public static function getEntryLocation($type, $id, $displayOrder = 'DESC', $whereClauses = '')
+    {
+        global $db;
+
+        if ($type == 'review') {
+            $entry = self::getReview($id);
+            $table = 'community_reviews';
+        } elseif ($type == 'comment') {
+            $entry = self::getComment($id);
+            $table = 'community_reviews_comments';
+        }
+
+        if (!$entry) {
+            return false;
+        }
+
+        $comparison = $displayOrder == 'DESC'
+            ? '>'
+            : '<'
+        ;
+
+        if ($whereClauses) {
+            $where = ' AND ' . $whereClauses;
+        } else {
+            $where = '';
+        }
+
+        $previousEntries = $db->fetch_field(
+            $db->simple_select($table, 'COUNT(id) AS n', 'product_id = ' . (int)$entry['product_id'] . ' AND id ' . $comparison . ' ' . (int)$id . $where),
             'n'
         );
 

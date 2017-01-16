@@ -143,4 +143,21 @@ var communityReviews = {
             }
         });
     },
+
+    setCommentListPage: function(productId, pageNo, event)
+    {
+        $('#comment-list').fadeTo('fast', 0.5);
+
+        $.get(rootpath + '/xmlhttp.php', {
+            action: 'community_reviews_product_comments',
+            product: productId,
+            page: pageNo,
+        }, function (response) {
+            $('#comments-pagination .pagination_current').replaceWith('<a class="pagination_page" href="' + [location.protocol, '//', location.host, location.pathname].join('') + '?page=' + $('#comments-pagination .pagination_current').text() + '">' + $('#comments-pagination .pagination_current').text() + '</a>');
+            $(event.target).replaceWith('<span class="pagination_current">' + $(event.target).text() + '</span>');
+
+            $('#comment-list').html(response.html);
+            $('#comment-list').fadeTo('fast', 1);
+        });
+    }
 };

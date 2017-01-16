@@ -11,6 +11,8 @@ class ListManager
     public $orderExtend;
     public $itemsNum;
     public $perPage;
+    public $inputEnabled;
+    public $inputPrefix;
 
     public $orderColumn;
     public $orderColumnAlias;
@@ -61,6 +63,18 @@ class ListManager
 
         if (isset($data['per_page'])) {
             $this->perPage = (int)$data['per_page'];
+        }
+
+        if (isset($data['input_prefix'])) {
+            $this->inputPrefix = $data['input_prefix'];
+        } else {
+            $this->inputPrefix = null;
+        }
+
+        if (isset($data['input_enabled'])) {
+            $this->inputEnabled = $data['input_enabled'];
+        } else {
+            $this->inputEnabled = true;
         }
 
         $this->inAcp = defined('IN_ADMINCP');
@@ -160,14 +174,15 @@ class ListManager
         // sorting
         if ($this->orderColumns) {
             if (
-                isset($this->mybb->input['sortby']) &&
-                in_array($this->mybb->input['sortby'], $this->orderColumns)
+                $this->inputEnabled &&
+                $this->getInput('sortby') !== null &&
+                in_array($this->getInput('sortby'), $this->orderColumns)
             ) {
-                if ($aliasedColumn = array_search($this->mybb->input['sortby'], $this->orderColumnsAliases)) {
+                if ($aliasedColumn = array_search($this->getInput('sortby'), $this->orderColumnsAliases)) {
                     $this->orderColumn = $aliasedColumn;
-                    $this->orderColumnAlias = $this->mybb->input['sortby'];
+                    $this->orderColumnAlias = $this->getInput('sortby');
                 } else {
-                    $this->orderColumn = $this->mybb->input['sortby'];
+                    $this->orderColumn = $this->getInput('sortby');
                     $this->orderColumnAlias = false;
                 }
             } else {
@@ -176,10 +191,11 @@ class ListManager
         }
 
         if (
-            isset($this->mybb->input['order']) &&
-            in_array($this->mybb->input['order'], $this->orderDirections)
+            $this->inputEnabled &&
+            $this->getInput('order') !== null &&
+            in_array($this->getInput('order'), $this->orderDirections)
         ) {
-            $this->orderDirection = $this->mybb->input['order'];
+            $this->orderDirection = $this->getInput('order');
         } else {
             $this->orderDirection = $this->defaultOrderDirection;
         }
@@ -198,11 +214,12 @@ class ListManager
 
             if (!$this->page) {
                 if (
-                    isset($this->mybb->input['page']) &&
-                    (int)$this->mybb->input['page'] > 0 &&
-                    (int)$this->mybb->input['page'] <= $this->pagesNum
+                    $this->inputEnabled &&
+                    $this->getInput('page') !== null &&
+                    (int)$this->getInput('page') > 0 &&
+                    (int)$this->getInput('page') <= $this->pagesNum
                 ) {
-                    $this->page = (int)$this->mybb->input['page'];
+                    $this->page = (int)$this->getInput('page');
                 } else {
                     $this->page = 1;
                 }
@@ -223,7 +240,14 @@ class ListManager
             $linkOrder = $this->orderDirection;
         }
 
-        return $this->baseUrl . ($appendParameters ? '?' : '&') . 'sortby=' . $column . '&order=' . $linkOrder;
+        return $this->baseUrl . ($appendParameters ? '?' : '&') . $this->inputPrefix . 'sortby=' . $column . '&' . $this->inputPrefix . 'order=' . $linkOrder;
     }
 
+    private function getInput($name)
+    {
+        return isset($this->mybb->input[$this->inputPrefix . $name])
+            ? $this->mybb->input[$this->inputPrefix . $name]
+            : null
+        ;
+    }
 }

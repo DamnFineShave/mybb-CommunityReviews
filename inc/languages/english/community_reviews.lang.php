@@ -60,6 +60,7 @@ $l['community_reviews_recent_reviews'] = 'Recent comments';
 $l['community_reviews_category'] = 'Product reviews in <span>{1}</span>';
 $l['community_reviews_product_summary'] = 'Product summary';
 $l['community_reviews_product_reviews'] = 'Product reviews';
+$l['community_reviews_product_comments'] = 'Product comments';
 $l['community_reviews_merge_product'] = 'Merge Product';
 $l['community_reviews_merchant_reviews'] = '{1} - merchant reviews';
 $l['community_reviews_merchant_widget'] = 'Merchant\'s reviews';

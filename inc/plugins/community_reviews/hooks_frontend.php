@@ -125,8 +125,42 @@ trait CommunityReviewsHooksFrontend
     public static function xmlhttp()
     {
         global $mybb, $db, $lang, $charset;
+    
+        if ($mybb->get_input('action') == 'community_reviews_product_comments') {
+            $lang->load('community_reviews');
 
-        if ($mybb->get_input('action') == 'community_reviews_recent') {
+            $product = self::getProduct($mybb->get_input('product', MyBB::INPUT_INT));
+
+            if (!$product) {
+                exit;
+            }
+
+            if ($requestedPage = abs($mybb->get_input('page', MyBB::INPUT_INT))) {
+                if ($requestedPage > 1) {
+                    $limitStart = ($requestedPage - 1) * (int)self::settings('reviews_per_page');
+                }
+            } else {
+                $limitStart = false;
+            }
+
+            $limit = (int)self::settings('reviews_per_page');
+
+            $commentsArray = self::getCommentDataInProduct(
+                $product['id'],
+                false,
+                'ORDER BY c.date ' . self::displayOrder() . ', c.id ' . self::displayOrder() . ' LIMIT ' . ($limitStart ? $limitStart . ', ' : null) . $limit)
+            ;
+            $comments = self::buildProductComments($product, $commentsArray);
+
+            $commentList = self::buildProductCommentList($comments);
+
+            header('Content-type: application/json; charset=' . $charset);
+
+            echo json_encode([
+                'html' => $commentList,
+            ]);
+            exit;
+        } elseif ($mybb->get_input('action') == 'community_reviews_recent') {
             $lang->load('community_reviews');
 
             if ($requestedPage = abs($mybb->get_input('page', MyBB::INPUT_INT))) {

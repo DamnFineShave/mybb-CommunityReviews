@@ -492,73 +492,67 @@ trait CommunityReviewsSectionsFrontend
 
                 $url = self::url('product', $product['id'], self::toSlug($product['name']));
 
-                if (!empty($mybb->input['reviews_only'])) {
-                    $whereClauses = 'review_id IS NOT NULL';
-                    $reviewsOnlyParameters = 'checked="checked"';
-                } else {
-                    $whereClauses = '';
-                    $reviewsOnlyParameters = '';
-                }
+                // review list
+                $reviewsNum = self::countReviewsInProduct($product['id']);
 
-                if ($mybb->seo_support) {
-                    $reviewsOnlyFields = '';
-                } else {
-                    $reviewsOnlyFields = '<input type="hidden" name="action" value="reviews" /><input type="hidden" name="product" value="' . $product['id'] .'" />';
-                }
-
-                $itemsNum = self::countProductFeedEntries($product['id'], $whereClauses);
-
-                $listManager = new CommunityReviews\ListManager([
+                $reviewListManager = new CommunityReviews\ListManager([
                     'mybb'          => $mybb,
-                    'baseurl'       => $url . (!empty($mybb->input['reviews_only']) ? '&reviews_only=1' : null),
+                    'baseurl'       => $url,
                     'order_columns' => ['date'],
                     'order_dir'     => self::displayOrder(),
                     'order_extend'  => '`id` ' . self::displayOrder(),
-                    'items_num'     => $itemsNum,
+                    'items_num'     => $reviewsNum,
                     'per_page'      => self::settings('reviews_per_page'),
                 ], true);
 
                 if ($mybb->get_input('review', MyBB::INPUT_INT)) {
-                    $data = self::getEntryLocation('review', $mybb->get_input('review', MyBB::INPUT_INT), self::displayOrder(), $whereClauses);
+                    $data = self::getEntryLocation('review', $mybb->get_input('review', MyBB::INPUT_INT), self::displayOrder());
                     if ($data && $data['product_id'] == $product['id']) {
-                        $listManager->page = $data['pageNumber'];
-                    }
-                } elseif ($mybb->get_input('comment', MyBB::INPUT_INT)) {
-                    $data = self::getEntryLocation('comment', $mybb->get_input('comment', MyBB::INPUT_INT), self::displayOrder(), $whereClauses);
-                    if ($data && $data['product_id'] == $product['id']) {
-                        $listManager->page = $data['pageNumber'];
+                        $reviewListManager->page = $data['pageNumber'];
                     }
                 }
 
-                $listManager->detect();
-                $multipage = $listManager->pagination();
+                $reviewListManager->detect();
+                $reviewsMultipage = $reviewListManager->pagination();
 
-                $feedQuery = self::getProductFeedEntries($product['id'], $whereClauses, $listManager->queryOptions());
-
-                $feedEntries = [];
-                $reviewIds = [];
-                $commentIds = [];
-
-                while ($row = $db->fetch_array($feedQuery)) {
-                    $feedEntries[] = $row;
-
-                    if ($row['review_id']) {
-                        $reviewIds[] = $row['review_id'];
-                    }
-                    if ($row['comment_id']) {
-                        $commentIds[] = $row['comment_id'];
-                    }
-                }
-
-                $reviewsArray = self::getReviewDataMultiple($reviewIds);
+                $reviewsArray = self::getReviewsDataInProduct($product['id'], false, $reviewListManager->sql());
+                $reviewIds = array_keys($reviewsArray);
                 $productPhotos = self::getReviewsPhotos($reviewIds);
                 $reviewMerchants = self::getReviewsMerchants($reviewIds);
                 $reviews = self::buildProductReviews($product, $reviewsArray, $categoryReviewFields, $productPhotos, $reviewMerchants);
 
-                $commentsArray = self::getCommentDataMultiple($commentIds);
+                $reviewList = self::buildProductReviewList($reviews);
+
+                $lang->multipage_pages = preg_replace('/\([0-9]+\)/i', '({1})', $lang->multipage_pages); // fix overwritten strings
+
+                // comment list
+                $commentsNum = self::countCommentsInProduct($product['id']);
+
+                $commentListManager = new CommunityReviews\ListManager([
+                    'mybb'          => $mybb,
+                    'baseurl'       => $url,
+                    'order_columns' => ['date'],
+                    'order_dir'     => self::displayOrder(),
+                    'order_extend'  => '`id` ' . self::displayOrder(),
+                    'items_num'     => $commentsNum,
+                    'per_page'      => self::settings('reviews_per_page'),
+                    'input_enabled' => false,
+                ], true);
+
+                if ($mybb->get_input('comment', MyBB::INPUT_INT)) {
+                    $data = self::getEntryLocation('comment', $mybb->get_input('comment', MyBB::INPUT_INT), self::displayOrder());
+                    if ($data && $data['product_id'] == $product['id']) {
+                        $commentListManager->page = $data['pageNumber'];
+                    }
+                }
+
+                $commentListManager->detect();
+                $commentsMultipage = $commentListManager->pagination();
+
+                $commentsArray = self::getCommentDataInProduct($product['id'], false, $commentListManager->sql());
                 $comments = self::buildProductComments($product, $commentsArray);
 
-                $feed = self::buildSeparatedProductFeed($feedEntries, $reviews, $comments);
+                $commentList = self::buildProductCommentList($comments);
 
                 eval('$content = "' . self::tpl('product') . '";');
 

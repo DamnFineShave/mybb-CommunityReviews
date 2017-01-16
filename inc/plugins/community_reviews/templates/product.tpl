@@ -14,17 +14,32 @@
 <section>
     <p class="community-reviews__section-title">{$lang->community_reviews_product_reviews}</p>
     <div class="community-reviews__content-options">
-        <div class="community-reviews__modifiers">
-            <form action="{$url}">
-                {$reviewsOnlyFields}
-                <label><input type="checkbox" name="reviews_only" value="1" onchange="this.form.submit()" {$reviewsOnlyParameters} /> {$lang->community_reviews_reviews_only}</label>
-            </form>
-        </div>
         <div class="community-reviews__actions">
-            <a href="{$addCommentUrl}" class="community-reviews__button button">{$lang->community_reviews_add_comment}</a>
             <a href="{$addReviewUrl}" class="community-reviews__button button">{$lang->community_reviews_add_review}</a>
         </div>
     </div>
-    {$feed}
-    <div class="community-reviews__pagination">{$multipage}</div>
+    {$reviewList}
+    <div class="community-reviews__pagination">{$reviewsMultipage}</div>
+
+    <br />
+
+    <p class="community-reviews__section-title">{$lang->community_reviews_product_comments}</p>
+    <div class="community-reviews__content-options">
+        <div class="community-reviews__actions">
+            <a href="{$addCommentUrl}" class="community-reviews__button button">{$lang->community_reviews_add_comment}</a>
+        </div>
+    </div>
+    <div id="comment-list">
+        {$commentList}
+    </div>
+    <div id="comments-pagination" class="community-reviews__pagination">{$commentsMultipage}</div>
 </section>
+
+<script>
+var productId = {$product['id']};
+
+$('#comments-pagination').on('click', '.pagination_page', function (event) {
+    communityReviews.setCommentListPage(productId, parseInt($(this).text()), event);
+    return false;
+});
+</script>

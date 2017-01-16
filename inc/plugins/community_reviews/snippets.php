@@ -422,6 +422,16 @@ trait CommunityReviewsSnippets
         return $html;
     }
 
+    public static function buildProductReviewList($reviewsHtml)
+    {
+        return implode(null, $reviewsHtml);
+    }
+
+    public static function buildProductCommentList($commentsHtml)
+    {
+        return implode(null, $commentsHtml);
+    }
+
     public static function reviewFormFieldsHtml($review, $reviewFields)
     {
         global $mybb, $lang;
