@@ -135,12 +135,18 @@ trait CommunityReviewsHooksFrontend
                 exit;
             }
 
+            $itemsNum = self::countCommentsInProduct($product['id']);
+
             if ($requestedPage = abs($mybb->get_input('page', MyBB::INPUT_INT))) {
                 if ($requestedPage > 1) {
                     $limitStart = ($requestedPage - 1) * (int)self::settings('reviews_per_page');
+                    $pageNo = $requestedPage;
+                } else {
+                    $pageNo = 1;
                 }
             } else {
                 $limitStart = false;
+                $pageNo = 1;
             }
 
             $limit = (int)self::settings('reviews_per_page');
@@ -154,10 +160,15 @@ trait CommunityReviewsHooksFrontend
 
             $commentList = self::buildProductCommentList($comments);
 
+            $url = self::url('product', $product['id'], self::toSlug($product['name']));
+
+            $paginationHtml = multipage($itemsNum, $limit, $pageNo, $url);
+
             header('Content-type: application/json; charset=' . $charset);
 
             echo json_encode([
                 'html' => $commentList,
+                'paginationHtml' => $paginationHtml,
             ]);
             exit;
         } elseif ($mybb->get_input('action') == 'community_reviews_recent') {
