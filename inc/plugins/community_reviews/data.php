@@ -1170,7 +1170,7 @@ trait CommunityReviewsData
 
         $time = time();
 
-        $data = [
+        $insertData = [
             'product_id' => (int)$data['product_id'],
             'user_id' => (int)$data['user_id'],
             'date' => $time,
@@ -1179,10 +1179,10 @@ trait CommunityReviewsData
         ];
 
         if ($data['review_id']) {
-            $data['review_id'] = (int)$data['review_id'];
+            $insertData['review_id'] = (int)$data['review_id'];
         }
 
-        $id = $db->insert_query('community_reviews_comments', $data);
+        $id = $db->insert_query('community_reviews_comments', $insertData);
 
         self::addProductFeedEntry([
             'time' => $time,
