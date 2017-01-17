@@ -18,6 +18,9 @@ trait CommunityReviewsSectionsFrontend
 
         $sectionSideContent = '';
 
+        $categoryListing = self::buildCategoryListing($category ?? null);
+        eval('$sectionSideContent .= "' . self::tpl('category_listing') . '";');
+
         // section dispatch
         if ($mybb->get_input('category')) {
             extract(self::frontendSectionCategory(compact([
@@ -34,9 +37,6 @@ trait CommunityReviewsSectionsFrontend
                 'sectionSideContent',
             ])));
         }
-
-        $categoryListing = self::buildCategoryListing($category ?? null);
-        eval('$sectionSideContent .= "' . self::tpl('category_listing') . '";');
 
         if (isset($mainTemplate)) {
             eval('$page = "' . self::tpl($mainTemplate) . '";');
