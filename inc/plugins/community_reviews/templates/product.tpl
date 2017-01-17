@@ -37,9 +37,17 @@
 
 <script>
 var productId = {$product['id']};
+var commentsPageNo = {$commentsPageNo};
 
-$('#comments-pagination').on('click', '.pagination_page', function (event) {
-    communityReviews.setCommentListPage(productId, parseInt($(this).text()), event);
+$('#comments-pagination').on('click', 'a', function (event) {
+    if ($(event.target).hasClass('pagination_next')) {
+        var pageNo = commentsPageNo + 1;
+    } else if ($(event.target).hasClass('pagination_previous')) {
+        var pageNo = commentsPageNo - 1;
+    } else {
+        var pageNo = parseInt($(this).text());
+    }
+    communityReviews.setCommentListPage(productId, pageNo, event);
     return false;
 });
 </script>

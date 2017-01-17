@@ -153,6 +153,7 @@ var communityReviews = {
             product: productId,
             page: pageNo,
         }, function (response) {
+            commentsPageNo = pageNo;
             $('#comments-pagination').html(response.paginationHtml);
             $('#comment-list').html(response.html);
             $('#comment-list').fadeTo('fast', 1);

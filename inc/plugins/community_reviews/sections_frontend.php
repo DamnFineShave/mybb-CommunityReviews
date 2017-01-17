@@ -548,6 +548,7 @@ trait CommunityReviewsSectionsFrontend
 
                 $commentListManager->detect();
                 $commentsMultipage = $commentListManager->pagination();
+                $commentsPageNo = $commentListManager->page;
 
                 $commentsArray = self::getCommentDataInProduct($product['id'], false, $commentListManager->sql());
                 $comments = self::buildProductComments($product, $commentsArray);
