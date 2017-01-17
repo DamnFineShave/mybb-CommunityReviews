@@ -18,7 +18,7 @@ var communityReviews = {
                 return;
             }
 
-            for (i = 0; i < numFiles; i++) {
+            for (var i = 0; i < numFiles; i++) {
                 file = files[i];
 
                 if (file.type.match(/image\/*/)) {
@@ -27,16 +27,20 @@ var communityReviews = {
                     var formData = new FormData();
                     formData.append('image', file);
 
-                    var $loader = $('<div class="community-reviews__photo-loader"><div class="community-reviews__photo-loader__bar"><div></div></div></div>');
-                    $loader.appendTo('#review_photos_preview');
-
                     $.ajax({
                         xhr: function() {
                             var xhr = new window.XMLHttpRequest();
+
+                            xhr.upload.addEventListener('loadstart', function(evt) {
+                                this.fileId = Math.floor((Math.random() * 100000));
+
+                                $('<div class="community-reviews__photo-loader" id="photoLoader' + this.fileId + '"><div class="community-reviews__photo-loader__bar"><div></div></div></div>').appendTo('#review_photos_preview');
+                            }, false);
+
                             xhr.upload.addEventListener('progress', function(evt) {
                                 if (evt.lengthComputable) {
                                     var percentComplete = parseInt((evt.loaded / evt.total) * 100);
-                                    $loader.find('.community-reviews__photo-loader__bar div').animate({ width: percentComplete + '%' });
+                                    $('#photoLoader' + this.fileId).attr('data-progress', percentComplete).find('.community-reviews__photo-loader__bar div').animate({ width: percentComplete + '%' });
                                 }
                             }, false);
 
@@ -50,8 +54,8 @@ var communityReviews = {
                         data: formData,
                         processData: false,
                         contentType: false,
-                        success: function(response) {
-                            $loader.remove();
+                        success: function(response, status, xhr) {
+                            $('.community-reviews__photo-loader[data-progress=100]').remove();
 
                             input.closest('form').find('button').removeAttr('disabled');
 
@@ -73,7 +77,11 @@ var communityReviews = {
                             $container.appendTo($photo);
                             $options.appendTo($photo);
 
-                            $('#review_photos_preview').append($photo);
+                            if ($('#review_photos_preview .community-reviews__photo').length) {
+                                $('#review_photos_preview .community-reviews__photo:last').after($photo);
+                            } else {
+                                $('#review_photos_preview').prepend($photo);
+                            }
                         },
                     });
                 }
