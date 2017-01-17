@@ -679,6 +679,23 @@ trait CommunityReviewsData
         return false;
     }
 
+    public static function setReviewPhotoOrder($reviewId)
+    {
+        global $db;
+
+        $reviewPhotos = self::getReviewPhotos($reviewId);
+
+        $order = 1;
+
+        foreach ($reviewPhotos as $photo) {
+            self::updatePhoto($photo['id'], [
+                'order' => $order++,
+            ]);
+        }
+
+        return true;
+    }
+
     public static function deletePhoto($id)
     {
         global $db;

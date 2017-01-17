@@ -12,6 +12,8 @@ trait CommunityReviewsLogicFrontend
         }
 
         if (!$errors) {
+            $photosChanged = false;
+
             if ($review['id']) {
                 $reviewId = $review['id'];
 
@@ -40,6 +42,7 @@ trait CommunityReviewsLogicFrontend
                 if (isset($review['delete_photos'])) {
                     foreach ($review['delete_photos'] as $photoId) {
                         self::deletePhoto($photoId);
+                        $photosChanged = true;
                     }
                 }
             } else {
@@ -73,6 +76,7 @@ trait CommunityReviewsLogicFrontend
                         'url' => $photo['photo_url'],
                         'thumbnail_url' => $photo['thumbnail_url'],
                     ]);
+                    $photosChanged = true;
                 }
             }
 
@@ -80,6 +84,8 @@ trait CommunityReviewsLogicFrontend
                 self::setReviewFirstPhoto($reviewId, $review['first_photo']);
             } elseif (isset($review['first_photo_url'])) {
                 self::setReviewFirstPhotoByUrl($reviewId, $review['first_photo_url']);
+            } elseif ($photosChanged) {
+                self::setReviewPhotoOrder($reviewId);
             }
 
             if (isset($review['removed_merchants'])) {
