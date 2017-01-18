@@ -17,14 +17,12 @@ trait CommunityReviewsSectionsFrontend
         eval('$searchForm = "' . self::tpl('search_form') . '";');
 
         $sectionSideContent = '';
-
-        $categoryListing = self::buildCategoryListing($category ?? null);
-        eval('$sectionSideContent .= "' . self::tpl('category_listing') . '";');
+        $sectionSideContentAppend = '';
 
         // section dispatch
         if ($mybb->get_input('category')) {
             extract(self::frontendSectionCategory(compact([
-                'sectionSideContent',
+                'sectionSideContentAppend',
             ])));
         } elseif ($mybb->get_input('product')) {
             extract(self::frontendSectionProduct());
@@ -34,9 +32,12 @@ trait CommunityReviewsSectionsFrontend
             extract(self::frontendSectionSearch());
         } else {
             extract(self::frontendSectionIndex(compact([
-                'sectionSideContent',
+                'sectionSideContentAppend',
             ])));
         }
+
+        $categoryListing = self::buildCategoryListing($category ?? null);
+        eval('$sectionSideContent .= "' . self::tpl('category_listing') . '" . $sectionSideContentAppend;');
 
         if (isset($mainTemplate)) {
             eval('$page = "' . self::tpl($mainTemplate) . '";');
@@ -78,12 +79,12 @@ trait CommunityReviewsSectionsFrontend
         $commentCount = my_number_format(self::countComments());
         $productViewCount = my_number_format(self::sumProductViews());
 
-        eval('$sectionSideContent .= "' . self::tpl('statistics') . '";');
+        eval('$sectionSideContentAppend .= "' . self::tpl('statistics') . '";');
 
         return [
             'title' => $title,
             'content' => $content,
-            'sectionSideContent' => $sectionSideContent,
+            'sectionSideContentAppend' => $sectionSideContentAppend,
         ];
     }
 
@@ -254,7 +255,7 @@ trait CommunityReviewsSectionsFrontend
                 $sortingOptions .= $listManager->link('views', $lang->community_reviews_sorting_views, $mybb->seo_support);
                 $sortingOptions .= $listManager->link('date', $lang->community_reviews_sorting_date, $mybb->seo_support);
 
-                eval('$sectionSideContent .= "' . self::tpl('sorting_options') . '";');
+                eval('$sectionSideContentAppend .= "' . self::tpl('sorting_options') . '";');
 
                 // product listing
                 $products = self::getProductsWithReviewCountAndPhotosInCategory($category['id'], $listManager->sql());
@@ -271,7 +272,7 @@ trait CommunityReviewsSectionsFrontend
         return [
             'title' => $title,
             'content' => $content,
-            'sectionSideContent' => $sectionSideContent,
+            'sectionSideContentAppend' => $sectionSideContentAppend,
             'category' => $category,
         ];
     }
