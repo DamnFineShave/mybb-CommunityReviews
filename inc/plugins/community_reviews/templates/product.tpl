@@ -38,16 +38,34 @@
 <script>
 var productId = {$product['id']};
 var commentsPageNo = {$commentsPageNo};
+var commentsPagesNo = {$commentsPagesNo};
 
 $('#comments-pagination').on('click', 'a', function (event) {
+    event.target = $(event.target).closest('a');
+
     if ($(event.target).hasClass('pagination_next')) {
         var pageNo = commentsPageNo + 1;
     } else if ($(event.target).hasClass('pagination_previous')) {
         var pageNo = commentsPageNo - 1;
+    } else if ($(event.target).hasClass('pagination_first')) {
+        var pageNo = 1;
+    } else if ($(event.target).hasClass('pagination_last')) {
+        var pageNo = commentsPagesNo;
+    } else if ($(event.target).hasClass('go_page')) {
+        return;
     } else {
         var pageNo = parseInt($(this).text());
     }
     communityReviews.setCommentListPage(productId, pageNo, event);
+    return false;
+});
+$('#comments-pagination').on('submit', '.drop_go_page form', function (event) {
+    var pageNo = parseInt($(event.target).find('input[name="page"]').val());
+
+    if (pageNo >= 1 && pageNo <= commentsPagesNo) {
+        communityReviews.setCommentListPage(productId, pageNo, event);
+    }
+    
     return false;
 });
 </script>
