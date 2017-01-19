@@ -865,13 +865,14 @@ trait CommunityReviewsData
         global $db;
         return $db->query("
             SELECT
-                r.*, p.name, u.username, u.usergroup, u.displaygroup, MIN(ph.thumbnail_url) AS thumbnail_url
+                r.*, p.name, u.username, u.usergroup, u.displaygroup, ph.thumbnail_url
             FROM
                 " . TABLE_PREFIX . "community_reviews r
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_products p ON p.id=r.product_id
                 INNER JOIN " . TABLE_PREFIX . "users u ON u.uid=r.user_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
-            GROUP BY r.id
+            WHERE ph.order = 1 OR ph.order IS NULL
+            GROUP BY r.id, ph.thumbnail_url
             $statements
         ");
     }
@@ -881,7 +882,7 @@ trait CommunityReviewsData
         global $db;
         return $db->query("
             SELECT
-                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, COUNT(DISTINCT pc.id) AS num_comments, MIN(ph.thumbnail_url) AS thumbnail_url
+                r.*, p.category_id, p.name, p.views, p.cached_rating, c.name AS category_name, u.username, u.usergroup, u.displaygroup, u.avatar, COUNT(pr.id) AS num_reviews, COUNT(DISTINCT pc.id) AS num_comments, ph.thumbnail_url
             FROM
                 " . TABLE_PREFIX . "community_reviews r
                 INNER JOIN " . TABLE_PREFIX . "community_reviews_products p ON p.id=r.product_id
@@ -890,7 +891,8 @@ trait CommunityReviewsData
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews pr ON pr.product_id=r.product_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_comments pc ON pc.product_id=r.product_id
                 LEFT JOIN " . TABLE_PREFIX . "community_reviews_photos ph ON ph.review_id=r.id
-            GROUP BY r.id, pr.product_id
+            WHERE ph.order = 1 OR ph.order IS NULL
+            GROUP BY r.id, pr.product_id, ph.thumbnail_url
             $statements
         ");
     }
