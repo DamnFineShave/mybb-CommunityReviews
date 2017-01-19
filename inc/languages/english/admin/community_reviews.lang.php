@@ -69,8 +69,14 @@ $l['setting_display_order_desc'] = 'Determines how product entries should be dis
 $l['setting_display_order_asc'] = 'Oldest to newest';
 $l['setting_display_order_desc'] = 'Newest to oldest';
 
-$l['setting_per_page'] = 'Items per page';
-$l['setting_per_page_desc'] = 'Items to be shown on single page.';
+$l['setting_reviews_per_page'] = 'Reviews per page';
+$l['setting_reviews_per_page_desc'] = 'Items to be shown on single page.';
+
+$l['setting_comments_per_page'] = 'Comments per page';
+$l['setting_comments_per_page_desc'] = 'Items to be shown on single page.';
+
+$l['setting_products_per_page'] = 'Products per page';
+$l['setting_products_per_page_desc'] = 'Items to be shown on single page.';
 
 $l['setting_widget_items_limit'] = 'Widget list length';
 $l['setting_widget_items_limit_desc'] = 'Number of items to be displayed in the Reviews widget.';
@@ -83,6 +89,9 @@ $l['setting_product_name_length_limit_desc'] = 'Limits the length of Product tit
 
 $l['setting_product_name_length_card'] = 'Name length limit on product cards';
 $l['setting_product_name_length_card_desc'] = 'Limits the length of titles displayed on Product cards.';
+
+$l['setting_seo_urls'] = 'Search engine friendly URLs';
+$l['setting_seo_urls_desc'] = 'Use friendly URLs when linking to Community Reviews pages. Requires plugin\'s rewrite rules present in the server configuration.';
 
 $l['setting_groups_edit_own'] = 'Group permissions: Deleting own content';
 $l['setting_groups_edit_own_desc'] = 'User groups that can delete own reviews.';
