@@ -536,7 +536,7 @@ trait CommunityReviewsSectionsFrontend
                     'order_dir'     => self::displayOrder(),
                     'order_extend'  => '`id` ' . self::displayOrder(),
                     'items_num'     => $commentsNum,
-                    'per_page'      => self::settings('reviews_per_page'),
+                    'per_page'      => self::settings('comments_per_page'),
                     'input_enabled' => false,
                 ], true);
 

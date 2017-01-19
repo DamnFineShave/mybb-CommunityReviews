@@ -1312,8 +1312,10 @@ trait CommunityReviewsData
 
         if ($type == 'review') {
             $entry = self::getReview($id);
+            $perPage = (int)self::settings('reviews_per_page');
         } elseif ($type == 'comment') {
             $entry = self::getComment($id);
+            $perPage = (int)self::settings('comments_per_page');
         }
 
         $feedId = self::getFeedId($type, $id);
@@ -1338,10 +1340,10 @@ trait CommunityReviewsData
             'n'
         );
 
-        if ((int)self::settings('reviews_per_page') < 1) {
+        if ($perPage < 1) {
             $pageNumber = 1;
         } else {
-            $pageNumber = ceil(($previousEntries + 1) / (int)self::settings('reviews_per_page'));
+            $pageNumber = ceil(($previousEntries + 1) / $perPage);
         }
 
         return [
@@ -1357,9 +1359,11 @@ trait CommunityReviewsData
         if ($type == 'review') {
             $entry = self::getReview($id);
             $table = 'community_reviews';
+            $perPage = (int)self::settings('reviews_per_page');
         } elseif ($type == 'comment') {
             $entry = self::getComment($id);
             $table = 'community_reviews_comments';
+            $perPage = (int)self::settings('comments_per_page');
         }
 
         if (!$entry) {
@@ -1382,10 +1386,10 @@ trait CommunityReviewsData
             'n'
         );
 
-        if ((int)self::settings('reviews_per_page') < 1) {
+        if ($perPage < 1) {
             $pageNumber = 1;
         } else {
-            $pageNumber = ceil(($previousEntries + 1) / (int)self::settings('reviews_per_page'));
+            $pageNumber = ceil(($previousEntries + 1) / $perPage);
         }
 
         return [

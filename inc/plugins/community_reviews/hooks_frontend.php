@@ -139,7 +139,7 @@ trait CommunityReviewsHooksFrontend
 
             if ($requestedPage = abs($mybb->get_input('page', MyBB::INPUT_INT))) {
                 if ($requestedPage > 1) {
-                    $limitStart = ($requestedPage - 1) * (int)self::settings('reviews_per_page');
+                    $limitStart = ($requestedPage - 1) * (int)self::settings('comments_per_page');
                     $pageNo = $requestedPage;
                 } else {
                     $pageNo = 1;
@@ -149,7 +149,7 @@ trait CommunityReviewsHooksFrontend
                 $pageNo = 1;
             }
 
-            $limit = (int)self::settings('reviews_per_page');
+            $limit = (int)self::settings('comments_per_page');
 
             $commentsArray = self::getCommentDataInProduct(
                 $product['id'],
