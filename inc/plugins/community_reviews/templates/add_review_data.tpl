@@ -35,6 +35,7 @@ if(use_xmlhttprequest == "1") {
     $('input[name="merchants"]').select2({
         placeholder: "{$lang->search_user}",
         minimumInputLength: 2,
+        allowClear: true,
         ajax: {
             url: 'xmlhttp.php?action=community_reviews_get_merchants',
             dataType: 'json',
