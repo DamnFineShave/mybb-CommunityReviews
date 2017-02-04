@@ -56,6 +56,12 @@ trait CommunityReviewsData
         );
     }
 
+    public static function getFieldByNameAndCategory($name, $categoryId)
+    {
+        global $db;
+        return $db->simple_select('community_reviews_fields', '*', "name = '" . $db->escape_string($name) . "' AND category_id=" . (int)$categoryId);
+    }
+
     public static function getFields($where = '', $options = [])
     {
         global $db;
@@ -150,6 +156,34 @@ trait CommunityReviewsData
         return $ids;
     }
 
+    public static function getFirstSiblingFieldOrderByName($name)
+    {
+        global $db;
+
+        $row = self::getFields("name = '" . $db->escape_string($name) . "'", [
+            'limit' => 1,
+        ]);
+
+        if ($db->num_rows($row)) {
+            return $db->fetch_array($row)['order'];
+        } else {
+            return false;
+        }
+    }
+
+    public static function getMaxFieldOrder()
+    {
+        global $db;
+
+        $row = $db->simple_select('community_reviews_fields', 'MAX(`order`) AS n');
+
+        if ($db->num_rows($row)) {
+            return $db->fetch_array($row)['n'];
+        } else {
+            return 0;
+        }
+    }
+
     public static function countFields($where = false)
     {
         global $db;
@@ -176,7 +210,7 @@ trait CommunityReviewsData
         return $db->insert_query('community_reviews_fields', [
             'category_id' => (int)$data['category_id'],
             'name' => $db->escape_string($data['name']),
-            'order' => 1,
+            'order' => $data['order'] ?? 1,
         ]);
     }
 

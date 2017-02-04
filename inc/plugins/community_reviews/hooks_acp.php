@@ -283,10 +283,17 @@ trait CommunityReviewsHooksACP
                     if ($mybb->request_method == 'post' && $mybb->get_input('add')) {
                         // action: add
                         foreach ($mybb->get_input('category_id', MyBB::INPUT_ARRAY) as $categoryId) {
-                            if (self::getCategory($categoryId)) {
+                            if (self::getCategory($categoryId) && !$db->num_rows(self::getFieldByNameAndCategory($mybb->get_input('name'), $categoryId))) {
+                                $order = self::getFirstSiblingFieldOrderByName($mybb->get_input('name'));
+                                
+                                if (!$order) {
+                                    $order = self::getMaxFieldOrder() + 1;
+                                }
+
                                 self::addField([
                                     'category_id' => $categoryId,
                                     'name' => $mybb->get_input('name'),
+                                    'order' => $order,
                                 ]);
                             }
                         }
