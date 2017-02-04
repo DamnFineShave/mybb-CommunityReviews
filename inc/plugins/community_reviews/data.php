@@ -459,6 +459,13 @@ trait CommunityReviewsData
         ]);
     }
 
+    public static function updateProductRatings($productIds)
+    {
+        foreach ($productIds as $productId) {
+            self::updateProductRating($productId);
+        }
+    }
+
     public static function bumpProductViews($id)
     {
         global $db;
@@ -717,6 +724,26 @@ trait CommunityReviewsData
         return $db->simple_select('community_reviews', '*', $where, $options);
     }
 
+    public static function getReviewsProducts($reviewIds)
+    {
+        global $db;
+
+        $idsFiltered = array_map('intval', $reviewIds);
+
+        if (!$idsFiltered) {
+            return false;
+        }
+
+        return array_column(
+            self::queryResultToArray(
+                $db->simple_select('community_reviews', 'product_id', 'id IN (' . implode(',', $idsFiltered) . ')', [
+                    'group_by' => 'product_id',
+                ])
+            ),
+            'product_id'
+        );
+    }
+
     public static function getReviewsById($ids, $options = [])
     {
         $idsFiltered = array_map('intval', $ids);
@@ -725,7 +752,7 @@ trait CommunityReviewsData
             return false;
         }
 
-        return self::getReviews('id IN (' . implode(',', $ids) . ')', $options);
+        return self::getReviews('id IN (' . implode(',', $idsFiltered) . ')', $options);
     }
 
     public static function getReviewData($reviewId)
@@ -1060,6 +1087,20 @@ trait CommunityReviewsData
     {
         global $db;
         return $db->simple_select('community_reviews_review_fields', '*', $where, $options);
+    }
+
+    public static function getReviewIdsByField($fieldId)
+    {
+        global $db;
+
+        return array_column(
+            self::queryResultToArray(
+                $db->simple_select('community_reviews_review_fields', 'review_id', 'field_id=' . (int)$fieldId, [
+                    'group_by' => 'review_id',
+                ])
+            ),
+            'review_id'
+        );
     }
 
     public static function countReviewField($where = false)

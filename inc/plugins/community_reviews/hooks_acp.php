@@ -200,7 +200,13 @@ trait CommunityReviewsHooksACP
                         if ($mybb->get_input('no')) {
                             admin_redirect('index.php?module=config-reviews&action=fields');
                         } else {
+                            $reviewsWithField = self::getReviewIdsByField($mybb->get_input('delete', MyBB::INPUT_INT));
+                            $reviewsWithFieldProducts = self::getReviewsProducts($reviewsWithField);
+
                             self::deleteField($mybb->get_input('delete', MyBB::INPUT_INT));
+
+                            self::updateProductRatings($reviewsWithFieldProducts);
+
                             flash_message($lang->community_reviews_admin_field_deleted, 'success');
                             admin_redirect('index.php?module=config-reviews&action=fields');
                         }
