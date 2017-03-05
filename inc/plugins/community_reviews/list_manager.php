@@ -115,7 +115,7 @@ class ListManager
                     $this->urlWithSortParameters()
                 );
             } else {
-                return multipage($this->itemsNum, $this->perPage, $this->page, $this->baseUrl);
+                return multipage($this->itemsNum, $this->perPage, $this->page, $this->urlWithSortParameters());
             }
         } else {
             return null;
@@ -183,7 +183,7 @@ class ListManager
                     $this->orderColumnAlias = $this->getInput('sortby');
                 } else {
                     $this->orderColumn = $this->getInput('sortby');
-                    $this->orderColumnAlias = false;
+                    $this->orderColumnAlias = null;
                 }
             } else {
                 $this->orderColumn = $this->orderColumns[0];
@@ -230,17 +230,17 @@ class ListManager
         }
     }
 
-    public function urlWithSortParameters($column = false, $linkOrder = false, $appendParameters = true)
+    public function urlWithSortParameters($column = false, $linkOrder = false)
     {
         if ($column === false) {
-            $column = $this->orderColumn;
+            $column = $this->orderColumnAlias ?? $this->orderColumn;
         }
 
         if ($linkOrder === false) {
             $linkOrder = $this->orderDirection;
         }
 
-        return $this->baseUrl . ($appendParameters ? '?' : '&') . $this->inputPrefix . 'sortby=' . $column . '&' . $this->inputPrefix . 'order=' . $linkOrder;
+        return $this->baseUrl . (strpos($this->baseUrl, '?') !== 0 ? '?' : '&') . $this->inputPrefix . 'sortby=' . $column . '&' . $this->inputPrefix . 'order=' . $linkOrder;
     }
 
     private function getInput($name)
