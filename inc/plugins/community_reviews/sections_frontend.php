@@ -243,7 +243,11 @@ trait CommunityReviewsSectionsFrontend
                     'order_columns' => ['name', 'rating' => 'cached_rating', 'num_reviews', 'views', 'date'],
                     'items_num'     => $itemsNum,
                     'per_page'      => self::settings('products_per_page'),
-                ]);
+                ], true);
+
+                $listManager->setOrder(self::settings('category_view_order_column'), self::settings('category_view_order_direction'));
+
+                $listManager->detect();
 
                 // pagination
                 $multipage = $listManager->pagination();

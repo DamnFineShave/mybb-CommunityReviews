@@ -234,6 +234,25 @@ asc=Oldest to newest
 desc=Newest to oldest',
                 'value'       => 'desc',
             ],
+            'category_view_order_column' => [
+                'title'       => 'Category view order',
+                'description' => 'Determines how products within a category should be displayed.',
+                'optionscode' => 'select
+name=Name
+rating=Rating
+num_reviews=Number of reviews
+views=Number of views
+date=Date',
+                'value'       => 'name',
+            ],
+            'category_view_order_direction' => [
+                'title'       => 'Category view order direction',
+                'description' => 'Determines which direction should be used for sorting.',
+                'optionscode' => 'select
+asc=Ascending
+desc=Descending',
+                'value'       => 'asc',
+            ],
             'reviews_per_page' => [
                 'title'       => 'Reviews per page',
                 'description' => 'Items to be shown on single page.',

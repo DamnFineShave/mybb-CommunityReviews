@@ -69,6 +69,19 @@ $l['setting_display_order_desc'] = 'Determines how product entries should be dis
 $l['setting_display_order_asc'] = 'Oldest to newest';
 $l['setting_display_order_desc'] = 'Newest to oldest';
 
+$l['setting_category_view_order_column'] = 'Category view order';
+$l['setting_category_view_order_column_desc'] = 'Determines how products within a category should be displayed.';
+$l['setting_category_view_order_column_name'] = 'Name';
+$l['setting_category_view_order_column_rating'] = 'Rating';
+$l['setting_category_view_order_column_num_reviews'] = 'Number of reviews';
+$l['setting_category_view_order_column_views'] = 'Number of views';
+$l['setting_category_view_order_column_date'] = 'Date';
+
+$l['setting_category_view_order_direction'] = 'Category view order direction';
+$l['setting_category_view_order_direction_desc'] = 'Determines which direction should be used for sorting.';
+$l['setting_category_view_order_direction_asc'] = 'Ascending';
+$l['setting_category_view_order_direction_desc'] = 'Descending';
+
 $l['setting_reviews_per_page'] = 'Reviews per page';
 $l['setting_reviews_per_page_desc'] = 'Items to be shown on single page.';
 

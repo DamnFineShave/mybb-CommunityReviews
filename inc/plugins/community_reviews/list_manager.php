@@ -178,15 +178,9 @@ class ListManager
                 $this->getInput('sortby') !== null &&
                 in_array($this->getInput('sortby'), $this->orderColumns)
             ) {
-                if ($aliasedColumn = array_search($this->getInput('sortby'), $this->orderColumnsAliases)) {
-                    $this->orderColumn = $aliasedColumn;
-                    $this->orderColumnAlias = $this->getInput('sortby');
-                } else {
-                    $this->orderColumn = $this->getInput('sortby');
-                    $this->orderColumnAlias = null;
-                }
-            } else {
-                $this->orderColumn = $this->orderColumns[0];
+                $this->setOrderColumn($this->getInput('sortby'));
+            } elseif (!$this->orderColumn) {
+                $this->setOrderColumn($this->orderColumns[0]);
             }
         }
 
@@ -195,9 +189,9 @@ class ListManager
             $this->getInput('order') !== null &&
             in_array($this->getInput('order'), $this->orderDirections)
         ) {
-            $this->orderDirection = $this->getInput('order');
+            $this->setOrderDirection($this->getInput('order'));
         } else {
-            $this->orderDirection = $this->defaultOrderDirection;
+            $this->setOrderDirection($this->defaultOrderDirection);
         }
 
         // pagination
@@ -241,6 +235,40 @@ class ListManager
         }
 
         return $this->baseUrl . (strpos($this->baseUrl, '?') !== 0 ? '?' : '&') . $this->inputPrefix . 'sortby=' . $column . '&' . $this->inputPrefix . 'order=' . $linkOrder;
+    }
+
+    public function setOrderColumn($columnName)
+    {
+        if (in_array($columnName, $this->orderColumns)) {
+            if ($aliasedColumn = array_search($columnName, $this->orderColumnsAliases)) {
+                $this->orderColumn = $aliasedColumn;
+                $this->orderColumnAlias = $columnName;
+            } else {
+                $this->orderColumn = $columnName;
+                $this->orderColumnAlias = null;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setOrderDirection($direction)
+    {
+        if (in_array($name, $this->orderDirections)) {
+            $this->orderDirection = $direction;
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function setOrder($column, $direction)
+    {
+        $this->setOrderColumn($column);
+        $this->setOrderDirection($direction);
     }
 
     private function getInput($name)
