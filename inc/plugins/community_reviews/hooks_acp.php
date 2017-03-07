@@ -58,6 +58,10 @@ trait CommunityReviewsHooksACP
 
             if ($mybb->input['action'] == 'categories' || empty($mybb->input['action'])) {
 
+                if (empty($mybb->input['action'])) {
+                    $mybb->input['action'] = 'categories';
+                }
+
                 if ($mybb->get_input('delete') && self::getCategory($mybb->get_input('delete', MyBB::INPUT_INT))) {
                     // action: delete
                     if($mybb->request_method == "post") {

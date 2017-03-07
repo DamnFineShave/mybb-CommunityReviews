@@ -101,7 +101,7 @@ class ListManager
             $pointer = null;
         }
 
-        return '<a href="' . $this->urlWithSortParameters($column, $linkOrder, $appendParameters) . '"' . ($active ? ' class="active"' : null) . '>' . $title . ' ' .  $pointer . '</a>';
+        return '<a href="' . $this->urlWithSortParameters($column, $linkOrder) . '"' . ($active ? ' class="active"' : null) . '>' . $title . ' ' .  $pointer . '</a>';
     }
 
     public function pagination()
@@ -234,7 +234,7 @@ class ListManager
             $linkOrder = $this->orderDirection;
         }
 
-        return $this->baseUrl . (strpos($this->baseUrl, '?') !== 0 ? '?' : '&') . $this->inputPrefix . 'sortby=' . $column . '&' . $this->inputPrefix . 'order=' . $linkOrder;
+        return $this->baseUrl . (strpos($this->baseUrl, '?') !== false ? '&' : '?') . $this->inputPrefix . 'sortby=' . $column . '&' . $this->inputPrefix . 'order=' . $linkOrder;
     }
 
     public function setOrderColumn($columnName)
@@ -256,7 +256,7 @@ class ListManager
 
     public function setOrderDirection($direction)
     {
-        if (in_array($name, $this->orderDirections)) {
+        if (in_array($direction, $this->orderDirections)) {
             $this->orderDirection = $direction;
 
             return true;
