@@ -190,7 +190,7 @@ class ListManager
             in_array($this->getInput('order'), $this->orderDirections)
         ) {
             $this->setOrderDirection($this->getInput('order'));
-        } else {
+        } elseif (!$this->orderDirection) {
             $this->setOrderDirection($this->defaultOrderDirection);
         }
 
