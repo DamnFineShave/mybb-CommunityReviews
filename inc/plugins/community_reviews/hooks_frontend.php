@@ -36,7 +36,7 @@ trait CommunityReviewsHooksFrontend
                     'widget',
                     'widget_entry',
                     'widget_entry_photo',
-                ], 'community_reviews_');
+                ], 'communityreviews_');
             }
             if ($mybb->get_input('action') == 'reviews') {
                 self::loadTemplates([
@@ -84,14 +84,14 @@ trait CommunityReviewsHooksFrontend
                     'search_results',
                     'sorting_options',
                     'statistics',
-                ], 'community_reviews_');
+                ], 'communityreviews_');
             }
         } elseif (defined('THIS_SCRIPT') && THIS_SCRIPT == 'member.php') {
             if ($mybb->get_input('action') == '') {
                 self::loadTemplates([
                     'merchant_widget',
                     'user_widget',
-                ], 'community_reviews_');
+                ], 'communityreviews_');
             }
         }
 
