@@ -120,3 +120,6 @@ $l['myalerts_setting_community_reviews_same_product_review'] = 'Receive alert wh
 
 $l['myalerts_community_reviews_same_product_comment_alert'] = '{1} has commented on {2}';
 $l['myalerts_setting_community_reviews_same_product_comment'] = 'Receive alert when a comment is added to product I\'ve posted in?';
+
+$l['dvz_stream_stream_community_reviews'] = 'Reviews';
+$l['dvz_stream_stream_community_reviews_event'] = 'New review';
