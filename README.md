@@ -41,9 +41,10 @@
    
    
 ### Misc. edits
-To change General Thoughts character limit, change "2000" to whatever you want in: https://github.com/DamnFineShave/mybb-CommunityReviews/blob/master/inc/plugins/community_reviews/logic_frontend.php#L144
+- Increase General Thoughts character limit, change 2000 to whatever you want in: 
+https://github.com/DamnFineShave/mybb-CommunityReviews/blob/master/inc/plugins/community_reviews/logic_frontend.php#L144
 
-As well as changing text to longtext here:
+- As well as changing text to longtext here:
 https://github.com/DamnFineShave/mybb-CommunityReviews/blob/master/inc/plugins/community_reviews.php
 
 
