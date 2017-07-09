@@ -36,15 +36,18 @@ https://github.com/DamnFineShave/mybb-CommunityReviews/blob/master/inc/plugins/c
    RewriteRule ^reviews-product-([0-9]+)-[0-9a-z_-]+$ index.php?action=reviews&product=$1 [L,QSA]
    RewriteRule ^reviews-merchant-([0-9]+)$ index.php?action=reviews&merchant=$1 [L,QSA]
    ```
- - nginx
+   
+ - Nginx
+ 
+   ```
+   rewrite ^/reviews$ /index.php?action=reviews last;
+   rewrite ^/reviews-search$ /index.php?action=reviews&search=1 last;
+   rewrite ^/reviews-category-([0-9]+)-[0-9a-z_-]+$ /index.php?action=reviews&category=$1 last;
+   rewrite ^/reviews-product-([0-9]+)-[0-9a-z_-]+$ /index.php?action=reviews&product=$1 last;
+   rewrite ^/reviews-merchant-([0-9]+)$ /index.php?action=reviews&merchant=$1 last;
+   
+   ```
 
-   ```
-  rewrite ^/reviews$ /index.php?action=reviews last;
-  rewrite ^/reviews-search$ /index.php?action=reviews&search=1 last;
-  rewrite ^/reviews-category-([0-9]+)-[0-9a-z_-]+$ /index.php?action=reviews&category=$1 last;
-  rewrite ^/reviews-product-([0-9]+)-[0-9a-z_-]+$ /index.php?action=reviews&product=$1 last;
-  rewrite ^/reviews-merchant-([0-9]+)$ /index.php?action=reviews&merchant=$1 last;
-   ```
 
 ### Plugin management events
 - **Install:**
