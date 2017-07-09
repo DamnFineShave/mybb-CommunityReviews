@@ -38,6 +38,8 @@
   rewrite ^/reviews-product-([0-9]+)-[0-9a-z_-]+$ /index.php?action=reviews&product=$1 last;
   rewrite ^/reviews-merchant-([0-9]+)$ /index.php?action=reviews&merchant=$1 last;
    ```
+   
+   
 ### Misc. edits
 To change General Thoughts character limit, change "2000" to whatever you want in: https://github.com/DamnFineShave/mybb-CommunityReviews/blob/master/inc/plugins/community_reviews/logic_frontend.php#L144
 
