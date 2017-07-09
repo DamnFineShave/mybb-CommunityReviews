@@ -22,7 +22,7 @@
 https://github.com/DamnFineShave/mybb-CommunityReviews/blob/master/inc/plugins/community_reviews/logic_frontend.php#L144
 
 - As well as changing text to longtext here:
-https://github.com/DamnFineShave/mybb-CommunityReviews/blob/master/inc/plugins/community_reviews.php
+https://github.com/DamnFineShave/mybb-CommunityReviews/blob/master/inc/plugins/community_reviews.php#L134
 
 ### URL rewrite rules
  - Apache
