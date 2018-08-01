@@ -102,7 +102,7 @@ trait CommunityReviewsSectionsFrontend
                     $content = self::confirmAction([
                         'permissions' => self::canDeleteUserContent($product['user_id']),
                         'message' => $lang->community_reviews_confirm_delete_product,
-                        'action_callback' => [self, 'deleteProduct'],
+                        'action_callback' => ['CommunityReviewsData', 'deleteProduct'],
                         'action_parameters' => [$product['id']],
                         'redirect_url' => self::url('category', $category['id'], self::toSlug($category['name'])),
                         'redirect_message' => $lang->community_reviews_product_deleted,
@@ -381,7 +381,7 @@ trait CommunityReviewsSectionsFrontend
                     $content = self::confirmAction([
                         'permissions' => self::canDeleteUserContent($comment['user_id']),
                         'message' => $lang->community_reviews_confirm_delete_comment,
-                        'action_callback' => [self, 'deleteComment'],
+                        'action_callback' => ['CommunityReviewsData', 'deleteComment'],
                         'action_parameters' => [$comment['id']],
                         'redirect_url' => self::url('product', $product['id'], self::toSlug($product['name'])),
                         'redirect_message' => $lang->community_reviews_comment_deleted,
